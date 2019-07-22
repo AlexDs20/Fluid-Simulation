@@ -9,10 +9,11 @@ TARGET    := program
 INCLUDE   := -I include/
 SRC       := $(wildcard src/*.cpp)
 OBJECTS   := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+INPUTFILE := ./input/input
 
 # Run
 CRUN = mpirun
-NCPU = 4
+NCPU = 1
 CRFLAGS = -np $(NCPU)
 
 
@@ -48,5 +49,4 @@ clean:
 		-@rm -rvf $(EXE_DIR)/*
 
 run:
-	$(CRUN) $(CRFLAGS) $(EXE_DIR)/$(TARGET)
-
+	$(CRUN) $(CRFLAGS) $(EXE_DIR)/$(TARGET) $(INPUTFILE)
