@@ -9,7 +9,8 @@ TARGET    := program
 INCLUDE   := -I include/
 SRC       := $(wildcard src/*.cpp)
 OBJECTS   := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-INPUTFILE := ./input/input
+INPUTFILE := ./IO/input
+OUTPUTFILE:= ./IO/output
 
 # Run
 CRUN = mpirun
@@ -49,4 +50,4 @@ clean:
 		-@rm -rvf $(EXE_DIR)/*
 
 run:
-	$(CRUN) $(CRFLAGS) $(EXE_DIR)/$(TARGET) $(INPUTFILE)
+	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE)

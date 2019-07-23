@@ -2,13 +2,17 @@
 #include <iostream>
 #include <mpi.h>
 #include <string>
+#include <vector>
+
 using namespace std;
 
-#include "Parameters.h"
-#include "Matrix.h"
+#include "collection.h"
+#include "matrix.h"
+#include "parameters.h"
+
 #define Real float
 
-int main(int argc, char *argv[]){
+int main(int , char *argv[]){
 //-------------------------
 // MPI STUFF
 MPI_Init(NULL, NULL);
@@ -18,14 +22,45 @@ int pid;
 MPI_Comm_rank(MPI_COMM_WORLD, &pid);
 
 //-------------------------
-// Parameter file
-//string inputfile="input";
-string inputfile=argv[argc-1];
-// Read input parameters in the structure P
+// Internal variables
+string inputfile  = argv[1];
+string outputfile = argv[2];
+
+//-------------------------
+// Parameters
 Parameters p(inputfile);
-// Allocate the memory for UVP arrays
-Matrix U(p.imax+2,p.jmax+2);
-U.setVal(p.UI);
+
+//-------------------------
+// Set initial UVP arrays
+Matrix U(p.imax+2,p.jmax+2,p.UI);
+Matrix V(p.imax+2,p.jmax+2,p.VI);
+Matrix P(p.imax+2,p.jmax+2,p.PI);
+
+//-------------------------
+// Create a boundary vector
+/*
+To be done: Create a vector that would contain values indicating whether it is a boundary or not.
+The boundary values for the field should then be changed accordingly to that vector
+*/
+
+//-------------------------
+// Calculate time step
+Real delt=0;
+delt = calcDT(p,U.max(),V.max());
+cout << delt << "\n";
+
+//-------------------------
+// Boundary Conditions
+U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
+V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
+
+//-------------------------
+// Write output
+std::vector<Real> dataOut;
+dataOut = U.getAll();
+
+writeData(outputfile,dataOut);
+
 
 // Split work between processors
 if (pid == 1){
@@ -36,4 +71,3 @@ if (pid == 1){
 MPI_Finalize();
 return 0;
 }
-

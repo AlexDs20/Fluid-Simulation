@@ -1,8 +1,10 @@
-#ifndef PARAMETERS_H
-#define PARAMETERS_H
-#define Real float
+#pragma once
+
 #include <string>
+
 using namespace std;
+
+#define Real float
 
 class Parameters{
   public:
@@ -12,5 +14,3 @@ class Parameters{
 
     Parameters(string file);
 };
-
-#endif
