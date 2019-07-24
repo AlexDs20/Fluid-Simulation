@@ -49,7 +49,7 @@ Real Matrix::max(){
 // TBD: Later on, I probably want the boundary to be a grid/vector from which I check each value
 //--------------------------------------------------
 void Matrix::setUBoundCond(int wW, int wE, int wS, int wN){
-  Real inflow=40;
+  Real inflow=10;
   if (wW > 4 || wE > 4 || wS > 4 || wN > 4){
     std::cout << "Invalid boundary request!" << std::endl;
   }
@@ -96,7 +96,7 @@ void Matrix::setUBoundCond(int wW, int wE, int wS, int wN){
 }
 
 void Matrix::setVBoundCond(int wW, int wE, int wS, int wN){
-   Real inflow=40;
+   Real inflow=10;
   if (wW > 4 || wE > 4 || wS > 4 || wN > 4){
     std::cout << "Invalid boundary request!" << std::endl;
   }

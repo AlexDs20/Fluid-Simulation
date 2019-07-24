@@ -45,9 +45,8 @@ The boundary values for the field should then be changed accordingly to that vec
 
 //-------------------------
 // Calculate time step
-Real delt=0;
-delt = calcDT(p,U.max(),V.max());
-cout << delt << "\n";
+Real delt = calcDT(p,U.max(),V.max());
+cout << delt << endl;
 
 //-------------------------
 // Boundary Conditions
@@ -55,12 +54,22 @@ U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
 V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
 
 //-------------------------
+//  Compute F
+std::vector<Real> F((p.imax+2)*(p.imax+2));
+std::vector<Real> G((p.imax+2)*(p.imax+2));
+F = computeF(p,delt,U,V);
+G = computeG(p,delt,U,V);
+
+
+if (true){
+//-------------------------
 // Write output
 std::vector<Real> dataOut;
-dataOut = U.getAll();
+//dataOut = U.getAll();
+dataOut = F;
 
 writeData(outputfile,dataOut);
-
+}
 
 // Split work between processors
 if (pid == 1){
