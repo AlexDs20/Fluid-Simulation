@@ -75,6 +75,10 @@ computeRHS(p,delt,&F,&G,&RHS);
 //-------------------------
 computePt1(p,&RHS,&P);
 
+//-------------------------
+//  Compute new velocities
+computeNewVel(p,&F,&G,&P,&U,&V);
+
 
 if (true){
 //-------------------------

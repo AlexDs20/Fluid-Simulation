@@ -5,6 +5,8 @@ using namespace std;
 
 #include "matrix.h"
 
+//--------------------------------------------------
+//  Constructors
 Matrix::Matrix(int w, int h, Real inVal){
   width = w;
   height = h;
@@ -17,7 +19,7 @@ Matrix::Matrix(int w, int h){
 }
 
 //--------------------------------------------------
-// Linear index of the (i,j)
+//  Linear index of the (i,j)
 int Matrix::idx(int i, int j){
   if (i-1>width || j-1>height)
     std::cout << "requested index out of bound!" << std::endl;
@@ -25,36 +27,36 @@ int Matrix::idx(int i, int j){
 }
 
 //--------------------------------------------------
-// Element i,j
+//  Element i,j
 Real Matrix::get(int i, int j){
   return val[idx(i,j)];
 }
 
 //--------------------------------------------------
-// Return all values
+//  Return all values
 vector<Real> Matrix::getAll(){
   return val;
 }
 
 //--------------------------------------------------
-// Set Specific value
+//  Set Specific value
 void Matrix::set(int i, int j, Real inVal){
   val[idx(i,j)] = inVal;
 }
 
 //--------------------------------------------------
-// Maximum
+//  Maximum
 Real Matrix::max(){
   return *std::max_element(std::begin(val),std::end(val));
 }
-// Minimum
+//  Minimum
 Real Matrix::min(){
   return *std::min_element(std::begin(val),std::end(val));
 }
 
 //--------------------------------------------------
-// Set Boundary Conditions for the U field
-// TBD: Later on, I probably want the boundary to be a grid/vector from which I check each value
+//  Set Boundary Conditions for the U field
+//  TBD: Later on, I probably want the boundary to be a grid/vector from which I check each value
 //--------------------------------------------------
 void Matrix::setUBoundCond(int wW, int wE, int wS, int wN){
   Real inflow=10;

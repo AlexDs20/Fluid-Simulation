@@ -21,3 +21,5 @@ void computeRHS(Parameters p, Real dt, Matrix* F, Matrix* G,Matrix* RHS);
 // Compute the value of the pressure for the following time step
 // eq 3.44 without eps and with 3.48 boundary conditions
 void computePt1(Parameters p, Matrix* rhs, Matrix* pt1);
+// Compute the velocities at the following time step
+void computeNewVel(Parameters p, Matrix* F, Matrix* G, Matrix* P, Matrix* U, Matrix* V);

@@ -201,3 +201,19 @@ void computePt1(Parameters p, Matrix* rhs, Matrix* pt1){
   }while ( it<=p.itermax && res > p.eps);
 }
 //--------------------------------------------------
+
+//--------------------------------------------------
+//  Compute u, v at time step +1
+//--------------------------------------------------
+void computeNewVel(Parameters p, Matrix* F, Matrix* G, Matrix* P, Matrix* U, Matrix* V){
+  for (int i = 1 ; i<=p.imax-1; ++i){
+    for (int j = 1; j<=p.jmax; ++j){
+      U->set(i,j, F->get(i,j) - (p.dt/p.dx)*(P->get(i+1,j)-P->get(i,j)));
+    }
+  }
+  for (int i = 1 ; i<=p.imax; ++i){
+    for (int j = 1; j<=p.jmax-1; ++j){
+      V->set(i,j, G->get(i,j) - (p.dt/p.dy)*(P->get(i,j+1)-P->get(i,j)));
+    }
+  }
+}
