@@ -9,7 +9,11 @@ Matrix::Matrix(int w, int h, Real inVal){
   width = w;
   height = h;
   val.resize(w*h,inVal);
-  //val = new Real[w*h];
+}
+Matrix::Matrix(int w, int h){
+  width = w;
+  height = h;
+  val.resize(w*h);
 }
 
 //--------------------------------------------------
@@ -42,6 +46,10 @@ void Matrix::set(int i, int j, Real inVal){
 // Maximum
 Real Matrix::max(){
   return *std::max_element(std::begin(val),std::end(val));
+}
+// Minimum
+Real Matrix::min(){
+  return *std::min_element(std::begin(val),std::end(val));
 }
 
 //--------------------------------------------------

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <mpi.h>
@@ -37,7 +38,7 @@ Matrix V(p.imax+2,p.jmax+2,p.VI);
 Matrix P(p.imax+2,p.jmax+2,p.PI);
 
 //-------------------------
-// Create a boundary vector
+// Create a boundary Matrix
 /*
 To be done: Create a vector that would contain values indicating whether it is a boundary or not.
 The boundary values for the field should then be changed accordingly to that vector
@@ -46,7 +47,6 @@ The boundary values for the field should then be changed accordingly to that vec
 //-------------------------
 // Calculate time step
 Real delt = calcDT(p,U.max(),V.max());
-cout << delt << endl;
 
 //-------------------------
 // Boundary Conditions
@@ -55,18 +55,32 @@ V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
 
 //-------------------------
 //  Compute F
-std::vector<Real> F((p.imax+2)*(p.imax+2));
-std::vector<Real> G((p.imax+2)*(p.imax+2));
-F = computeF(p,delt,U,V);
-G = computeG(p,delt,U,V);
+Matrix F((p.imax+2),(p.imax+2));
+Matrix G((p.imax+2),(p.imax+2));
+computeF(p,delt,&U,&V,&F);
+computeG(p,delt,&U,&V,&G);
+
+
+//-------------------------
+//  Compute RHS
+Matrix RHS((p.imax+2),(p.imax+2));
+computeRHS(p,delt,&F,&G,&RHS);
+
+//-------------------------
+//  Compute Pressure at
+//  the next time step
+//
+//  &P serves as input
+//  and output
+//-------------------------
+computePt1(p,&RHS,&P);
 
 
 if (true){
 //-------------------------
 // Write output
 std::vector<Real> dataOut;
-//dataOut = U.getAll();
-dataOut = F;
+dataOut = U.getAll();
 
 writeData(outputfile,dataOut);
 }
