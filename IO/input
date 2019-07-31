@@ -1,9 +1,9 @@
-xlength = 10
-ylength = 10
+xlength = 1
+ylength = 1
 imax = 56
 jmax = 56
 dt = 1
-t_end = 1000
+t_end = 0.001
 tau = 0.5
 itermax = 1000
 eps = 1.7

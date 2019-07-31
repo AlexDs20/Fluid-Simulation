@@ -30,12 +30,18 @@ string outputfile = argv[2];
 //-------------------------
 // Parameters
 Parameters p(inputfile);
+Real delt;
+Real t = 0;
 
 //-------------------------
 // Set initial UVP arrays
 Matrix U(p.imax+2,p.jmax+2,p.UI);
 Matrix V(p.imax+2,p.jmax+2,p.VI);
 Matrix P(p.imax+2,p.jmax+2,p.PI);
+
+Matrix F((p.imax+2),(p.imax+2));
+Matrix G((p.imax+2),(p.imax+2));
+Matrix RHS((p.imax+2),(p.imax+2));
 
 //-------------------------
 // Create a boundary Matrix
@@ -44,49 +50,43 @@ To be done: Create a vector that would contain values indicating whether it is a
 The boundary values for the field should then be changed accordingly to that vector
 */
 
-//-------------------------
-// Calculate time step
-Real delt = calcDT(p,U.max(),V.max());
+while (t==0){//(t<p.t_end){
+  //-------------------------
+  // Calculate time step
+  delt = calcDT(p,U.max(),V.max());
 
-//-------------------------
-// Boundary Conditions
-U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
-V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
+  //-------------------------
+  // Boundary Conditions
+  U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
+  V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
 
-//-------------------------
-//  Compute F
-Matrix F((p.imax+2),(p.imax+2));
-Matrix G((p.imax+2),(p.imax+2));
-computeF(p,delt,&U,&V,&F);
-computeG(p,delt,&U,&V,&G);
+  //-------------------------
+  //  Compute F
+  computeF(p,delt,&U,&V,&F);
+  computeG(p,delt,&U,&V,&G);
 
+  //-------------------------
+  //  Compute RHS
+  computeRHS(p,delt,&F,&G,&RHS);
 
-//-------------------------
-//  Compute RHS
-Matrix RHS((p.imax+2),(p.imax+2));
-computeRHS(p,delt,&F,&G,&RHS);
+  //-------------------------
+  //  Compute Pressure at
+  //  the next time step
+  //
+  //  &P serves as input
+  //  and output
+  //-------------------------
+  computePt1(p,&RHS,&P);
 
-//-------------------------
-//  Compute Pressure at
-//  the next time step
-//
-//  &P serves as input
-//  and output
-//-------------------------
-computePt1(p,&RHS,&P);
+  //-------------------------
+  //  Compute new velocities
+  computeNewVel(p,&F,&G,&P,&U,&V);
 
-//-------------------------
-//  Compute new velocities
-computeNewVel(p,&F,&G,&P,&U,&V);
+  //-------------------------
+  // Write output
+  writeData(outputfile,U.getAll());
 
-
-if (true){
-//-------------------------
-// Write output
-std::vector<Real> dataOut;
-dataOut = U.getAll();
-
-writeData(outputfile,dataOut);
+  t += delt;
 }
 
 // Split work between processors

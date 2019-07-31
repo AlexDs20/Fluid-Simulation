@@ -48,6 +48,7 @@ release: all
 clean:
 		-@rm -rvf $(OBJ_DIR)/*
 		-@rm -rvf $(EXE_DIR)/*
+		-@rm -rvf $(OUTPUTFILE)
 
 run:
 	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE)

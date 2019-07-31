@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import pandas as pd
 
 inputfile = "../IO/input"
@@ -33,28 +34,29 @@ y = np.append(y,y[-1]+dy)
 # Creates the meshgrid for the plot
 X, Y = np.meshgrid(x,y)         # the y indexing is on dim 0 and x is on dim 1
 
-# Prepare figure
-fig, axs = plt.subplots(1, 1)
-
 #-------------------------
 # Reshape output data (also need to delete the last element which is a new line and shows up as a nan)
 infile = open(outputfile, "r")
 lines = infile.read().strip().split("\n") # the .strip() eliminates blank lines at beginning or end of file, but watch out if a line is supposed to begin or end with whitespace like a tab or space
 
+# Prepare figure
+fig, ax = plt.subplots(1, 1)
+ims = []
+
 for line in lines:
     data = np.fromstring(line, dtype=float, sep=' ')
-    data = np.reshape(data,(imax+2,jmax+2))
-    print(data.size)
-    print(data.shape)
+    data = np.reshape(data,(jmax+2,imax+2))
     # append a column and a row
-    dataResh = np.zeros((imax+3,jmax+3))
+    dataResh = np.zeros((jmax+3,imax+3))
     dataResh[:-1,:-1] = data
 
     # Plot time
-    ax = axs
-    c = ax.pcolor(X, Y, dataResh, cmap='RdBu')#, vmin=-5, vmax=10)
-    ax.set_title('pcolor')
-    fig.colorbar(c, ax=ax)
-    plt.show()
+    ims.append((plt.pcolor(X, Y, dataResh, cmap='RdBu'),))
+    #c = ax.pcolor(X, Y, dataResh, cmap='RdBu')#, vmin=-5, vmax=10)
+
+im_ani = animation.ArtistAnimation(fig, ims, interval=500, repeat_delay=3000,blit=True)
+ax.set_title('pcolor')
+plt.colorbar()
+plt.show()
 
 infile.close()
