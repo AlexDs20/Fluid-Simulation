@@ -54,7 +54,8 @@ for line in lines:
     ims.append((plt.pcolor(X, Y, dataResh, cmap='RdBu'),))
     #c = ax.pcolor(X, Y, dataResh, cmap='RdBu')#, vmin=-5, vmax=10)
 
-im_ani = animation.ArtistAnimation(fig, ims, interval=500, repeat_delay=3000,blit=True)
+
+im_ani = animation.ArtistAnimation(fig, ims, interval=200, repeat_delay=3000,blit=True)
 ax.set_title('pcolor')
 plt.colorbar()
 plt.show()

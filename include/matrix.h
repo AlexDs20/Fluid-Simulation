@@ -14,7 +14,7 @@ class Matrix{
 
     int idx(int i, int j);
     Real get(int i, int j);
-    vector<Real> getAll();
+    std::vector<Real> getAll();
     void set(int i, int j, Real inVal);   // Set specific index val
     Real max();
     Real min();

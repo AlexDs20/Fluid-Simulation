@@ -14,15 +14,15 @@ using namespace std;
 // Calculates time step
 //--------------------------------------------------
 Real calcDT(Parameters p, Real umax, Real vmax){
-  Real A = (p.Re/2)*1/( pow(p.dx,-2)+pow(p.dy,-2) );
+  Real A = (p.Re/2) * 1/( 1/(p.dx*p.dx) + 1/(p.dy*p.dy) );
   Real B = p.dx/abs(umax);
   Real C = p.dy/abs(vmax);
   Real D = p.dt;
+  Real out = D;
   if (p.tau > 0){
-    return p.tau*min({A,B,C,D});
-  } else {
-    return D;
+    out =  p.tau*min({A,B,C,D});
   }
+  return out;
 }
 //--------------------------------------------------
 
@@ -84,13 +84,13 @@ void computeF(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* F){
           );
         // Computes dyuv
         dyuv = (1/p.dy)*
-          ( (V->get(i,j)+V->get(i+1,j)) * (U->get(i,j)+U->get(i,j+1)) / 4 -
-            (V->get(i,j-1)+V->get(i+1,j-1)) * (U->get(i,j-1)+U->get(i,j)) / 4
-          )
+          ( (V->get(i,j)   + V->get(i+1,j)  ) * (U->get(i,j)   + U->get(i,j+1)) -
+            (V->get(i,j-1) + V->get(i+1,j-1)) * (U->get(i,j-1) + U->get(i,j)  )
+          ) / 4
           + (gamma/p.dy)*
-          ( abs( (V->get(i,j)+V->get(i+1,j)) ) * (U->get(i,j)-U->get(i,j+1)) / 4 -
-            abs( (V->get(i,j-1)+V->get(i+1,j-1)) ) * (U->get(i,j-1)-U->get(i,j)) / 4
-          );
+          ( abs( (V->get(i,j)   + V->get(i+1,j)  ) ) * (U->get(i,j)   - U->get(i,j+1)) -
+            abs( (V->get(i,j-1) + V->get(i+1,j-1)) ) * (U->get(i,j-1) - U->get(i,j)  )
+          ) / 4;
 
         // Computes F
         F->set(i,j, U->get(i,j)+dt*( (1/p.Re)*( dx2u+dy2u ) -dxu2-dyuv+p.gx ));

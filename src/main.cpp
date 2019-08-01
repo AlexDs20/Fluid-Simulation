@@ -39,9 +39,20 @@ Matrix U(p.imax+2,p.jmax+2,p.UI);
 Matrix V(p.imax+2,p.jmax+2,p.VI);
 Matrix P(p.imax+2,p.jmax+2,p.PI);
 
-Matrix F((p.imax+2),(p.imax+2));
-Matrix G((p.imax+2),(p.imax+2));
-Matrix RHS((p.imax+2),(p.imax+2));
+Matrix F((p.imax+2),(p.jmax+2));
+Matrix G((p.imax+2),(p.jmax+2));
+Matrix RHS((p.imax+2),(p.jmax+2));
+
+//-------------------------
+//  Set scale parameters
+//  and Reynolds number
+p.setScale(std::max({std::abs(U.max()),std::abs(U.min())}),
+           std::max({std::abs(V.max()),std::abs(V.min())}),
+           P.max());
+//-------------------------
+//  Go to dimensionless
+//  variables
+p.toDimensionless(&U, &V, &P);
 
 //-------------------------
 // Create a boundary Matrix
@@ -50,9 +61,10 @@ To be done: Create a vector that would contain values indicating whether it is a
 The boundary values for the field should then be changed accordingly to that vector
 */
 
-while (t==0){//(t<p.t_end){
+while (t<p.t_end){
   //-------------------------
   // Calculate time step
+  std::cout << t/p.t_end << "%" << std::endl;
   delt = calcDT(p,U.max(),V.max());
 
   //-------------------------

@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 
+#include "matrix.h"
 #include "parameters.h"
 
 using namespace std;
@@ -34,8 +36,8 @@ Parameters::Parameters(string inputfile){
         eps = val;}
       else if ( var.compare("omega") == 0 ){
         omega = val;}
-      else if ( var.compare("Re") == 0 ){
-        Re = val;}
+//      else if ( var.compare("Re") == 0 ){
+//        Re = val;}
       else if ( var.compare("gx") == 0 ){
         gx = val;}
       else if ( var.compare("gy") == 0 ){
@@ -46,6 +48,10 @@ Parameters::Parameters(string inputfile){
         VI = val;}
       else if ( var.compare("PI") == 0 ){
         PI = val;}
+      else if ( var.compare("rho") == 0 ){
+        rho = val;}
+      else if ( var.compare("dynvis") == 0 ){
+        vis = val;}
       else if ( var.compare("wW") == 0 ){
         wW = val;}
       else if ( var.compare("wE") == 0 ){
@@ -64,4 +70,40 @@ Parameters::Parameters(string inputfile){
   }
   dx = xlength/imax;
   dy = ylength/jmax;
+}
+
+void Parameters::setScale(Real uMax, Real vMax, Real pMax){
+  L = std::max({xlength,ylength});
+  uInf = std::max({uMax,vMax});
+  pInf = pMax;
+  rhoInf = rho;
+  Re = rhoInf*uInf*L/vis;
+}
+
+void Parameters::toDimensionless(Matrix* U, Matrix* V, Matrix* P){
+  xlength = xlength/L;
+  ylength = ylength/L;
+  t_end = uInf*t_end/L;
+  dt = uInf*dt/L;
+  for (int i = 0; i<imax+2; ++i){
+    for (int j = 1; j<jmax+2; j++){
+      U->set(i,j,U->get(i,j)/uInf);
+      V->set(i,j,V->get(i,j)/uInf);
+      P->set(i,j,(P->get(i,j)-pInf)/(rhoInf*uInf*uInf));
+    }
+  }
+}
+
+void Parameters::toDimensional(Matrix* U, Matrix* V, Matrix* P){
+  xlength = xlength*L;
+  ylength = ylength*L;
+  t_end = t_end*L/uInf;
+  dt = dt*L/uInf;
+  for (int i = 0; i<imax+2; ++i){
+    for (int j = 1; j<jmax+2; j++){
+      U->set(i,j,U->get(i,j)*uInf);
+      V->set(i,j,V->get(i,j)*uInf);
+      P->set(i,j,P->get(i,j)*rhoInf*uInf*uInf+pInf);
+    }
+  }
 }
