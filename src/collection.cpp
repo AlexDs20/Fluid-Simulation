@@ -14,7 +14,7 @@ using namespace std;
 // Calculates time step
 //--------------------------------------------------
 Real calcDT(Parameters p, Real umax, Real vmax){
-  Real A = (p.Re/2) * 1/( 1/(p.dx*p.dx) + 1/(p.dy*p.dy) );
+  Real A = (p.Re/2.0) * 1.0/( 1.0/(p.dx*p.dx) + 1.0/(p.dy*p.dy) );
   Real B = p.dx/abs(umax);
   Real C = p.dy/abs(vmax);
   Real D = p.dt;

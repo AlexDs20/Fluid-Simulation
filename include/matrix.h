@@ -18,6 +18,4 @@ class Matrix{
     void set(int i, int j, Real inVal);   // Set specific index val
     Real max();
     Real min();
-    void setUBoundCond(int wW, int wE, int wS, int wN);
-    void setVBoundCond(int wW, int wE, int wS, int wN);
 };

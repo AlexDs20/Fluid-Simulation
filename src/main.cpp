@@ -7,6 +7,7 @@
 
 using namespace std;
 
+#include "boundary.h"
 #include "collection.h"
 #include "matrix.h"
 #include "parameters.h"
@@ -69,8 +70,9 @@ while (t<p.t_end){
 
   //-------------------------
   // Boundary Conditions
-  U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
-  V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
+  setBoundaries(p,&U,&V);
+//  U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
+//  V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
 
   //-------------------------
   //  Compute F
