@@ -12,30 +12,33 @@ make
 make run
 ```
 
+### The input
 The input for the simulation are given in IO/input:
 
-* xlength      length of the system along x
-* ylength      length of the system along y
-* imax         number of cells in x
-* jmax         number of cells in y
-* dt           minimum desired time step
-* t_end        simulation time
-* tau          security factor (0<tau<=1) for the time step
-* itermax      maximum number of iteration to get the pressure when using the SOR algo.
-* eps          maximum residual in the SOR algo.
-* omega        coeff in the SOR algo
-* Re           Reynolds number
-* gx           external force along x
-* gy           external force along y                        
-* UI           Initial velocity along x (given in the whole domain)
-* VI           Initial velocity along y (given in the whole domain)
-* PI           Initial pressure (given in the whole domain)
-* rho          density
-* dynvis       dynamical viscosity
-* wW           boundary condition on the left of the box (x=0)
-* wE           boundary condition on the right of the box (x=xlength)
-* wN           boundary condition on the top of the box (y=ylength)
-* wS           boundary condition on the bottom of the box (y=0)
+Inputs     | what it does
+-----------|--------------
+*xlength*  |   length of the system along x
+*ylength*  |   length of the system along y
+*imax*     |   number of cells in x
+*jmax*     |   number of cells in y
+*dt*       |   minimum desired time step
+*t_end*    |   simulation time
+*tau*      |   security factor (0<tau<=1) for the time step
+*itermax*  |   maximum number of iteration to get the pressure when using the SOR algo.
+*eps*      |   maximum residual in the SOR algo.
+*omega*    |   coeff in the SOR algo
+*Re*       |   Reynolds number
+*gx*       |   external force along x
+*gy*       |   external force along y                        
+*UI*       |   Initial velocity along x (given in the whole domain)
+*VI*       |   Initial velocity along y (given in the whole domain)
+*PI*       |   Initial pressure (given in the whole domain)
+*rho*      |   density
+*dynvis*   |   dynamical viscosity
+*wW*       |   boundary condition on the left of the box (x=0)
+*wE*       |   boundary condition on the right of the box (x=xlength)
+*wN*       |   boundary condition on the top of the box (y=ylength)
+*wS*       |   boundary condition on the bottom of the box (y=0)
 
 
 
@@ -70,8 +73,8 @@ to make a quiver plot starting from the center of the cells, the values of the v
 
 ## On the to do list:
 
-1) Implementing obstacle within the domain so that the user can simulate whatever he wants.
-2) Paralellizing the code.
-3) Making the possibility for the obstacle to be moved by the flows.
-4) Giving the possibility to do 3D simulations
-5) Making the quiver plot to visualise the velocity field.
+- [ ] Implementing obstacle within the domain so that the user can simulate whatever he wants.
+- [ ] Paralellizing the code.
+- [ ] Making the possibility for the obstacle to be moved by the flows.
+- [ ] Giving the possibility to do 3D simulations
+- [ ] Making the quiver plot to visualise the velocity field.
