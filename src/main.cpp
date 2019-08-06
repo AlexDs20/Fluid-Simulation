@@ -30,18 +30,18 @@ string outputfile = argv[2];
 //-------------------------
 // Parameters
 Parameters p(inputfile);
-Real delt;
-Real t = 0;
+real delt;
+real t = 0;
 
 //-------------------------
 // Set initial UVP arrays
-Matrix U(p.imax+2,p.jmax+2,p.UI);
-Matrix V(p.imax+2,p.jmax+2,p.VI);
-Matrix P(p.imax+2,p.jmax+2,p.PI);
+matrix U(p.imax+2,p.jmax+2,p.UI);
+matrix V(p.imax+2,p.jmax+2,p.VI);
+matrix P(p.imax+2,p.jmax+2,p.PI);
 
-Matrix F((p.imax+2),(p.jmax+2));
-Matrix G((p.imax+2),(p.jmax+2));
-Matrix RHS((p.imax+2),(p.jmax+2));
+matrix F((p.imax+2),(p.jmax+2));
+matrix G((p.imax+2),(p.jmax+2));
+matrix RHS((p.imax+2),(p.jmax+2));
 
 //-------------------------
 //  Set scale parameters
@@ -55,7 +55,7 @@ Matrix RHS((p.imax+2),(p.jmax+2));
 // p.toDimensionless(&U, &V, &P);
 
 //-------------------------
-// Create a boundary Matrix
+// Create a boundary matrix
 /*
 To be done: Create a matrix that would contain values indicating whether it is a boundary or not.
 The boundary values for the field should then be changed accordingly to the boudaries

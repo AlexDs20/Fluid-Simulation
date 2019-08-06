@@ -1,1 +1,1 @@
-#define Real float
+#define real float

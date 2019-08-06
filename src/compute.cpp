@@ -13,7 +13,7 @@ using namespace std;
 //--------------------------------------------------
 // Write all output data to files
 //--------------------------------------------------
-void writeOutput(string file, Matrix* U, Matrix* V, Matrix* P){
+void writeOutput(string file, matrix* U, matrix* V, matrix* P){
   string file1 = file+"U";
   string file2 = file+"V";
   string file3 = file+"P";
@@ -27,7 +27,7 @@ void writeOutput(string file, Matrix* U, Matrix* V, Matrix* P){
 //--------------------------------------------------
 // Write data to file
 //--------------------------------------------------
-void writeData(string file, std::vector<Real> v){
+void writeData(string file, std::vector<real> v){
   ofstream myfile;
   myfile.open(file, ios::out | ios::app);
 
@@ -45,12 +45,12 @@ void writeData(string file, std::vector<Real> v){
 //--------------------------------------------------
 // Calculates time step (eq.3.50, page 39)
 //--------------------------------------------------
-Real computeDT(Parameters p, Real umax, Real vmax){
-  Real A = (p.Re/2.0) * 1.0/( 1.0/(p.dx*p.dx) + 1.0/(p.dy*p.dy) );
-  Real B = p.dx/umax;
-  Real C = p.dy/vmax;
-  Real D = p.dt;
-  Real out = D;
+real computeDT(Parameters p, real umax, real vmax){
+  real A = (p.Re/2.0) * 1.0/( 1.0/(p.dx*p.dx) + 1.0/(p.dy*p.dy) );
+  real B = p.dx/umax;
+  real C = p.dy/vmax;
+  real D = p.dt;
+  real out = D;
   if (p.tau > 0){
     out =  p.tau*min({A,B,C,D});
   }
@@ -61,14 +61,14 @@ Real computeDT(Parameters p, Real umax, Real vmax){
 //--------------------------------------------------
 //  Compute gamma (eq 3.20 page 30)
 //--------------------------------------------------
-Real computeGamma(Matrix* U, Matrix * V, Real dx, Real dy, Real dt){
-  Real minU = std::abs(U->min());
-  Real maxU = U->max();
-  Real maxAbsU = (minU < maxU)? maxU*dt/dx:minU*dt/dx;
+real computeGamma(matrix* U, matrix * V, real dx, real dy, real dt){
+  real minU = std::abs(U->min());
+  real maxU = U->max();
+  real maxAbsU = (minU < maxU)? maxU*dt/dx:minU*dt/dx;
 
-  Real minV = std::abs(V->min());
-  Real maxV = V->max();
-  Real maxAbsV = (minV < maxV)? maxV*dt/dy:minV*dt/dy;
+  real minV = std::abs(V->min());
+  real maxV = V->max();
+  real maxAbsV = (minV < maxV)? maxV*dt/dy:minV*dt/dy;
 
   return (1-std::max(maxAbsU,maxAbsV))/2;    // So that the value is right between the max and 1
 }
@@ -77,13 +77,13 @@ Real computeGamma(Matrix* U, Matrix * V, Real dx, Real dy, Real dt){
 //--------------------------------------------------
 //  Compute F
 //--------------------------------------------------
-void computeF(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* F){
-  Real gamma = computeGamma(U,V,p.dx,p.dy,dt);
-  Real dx2u, dy2u, dxu2, dyuv;
-  Real idx = 1.0/p.dx;
-  Real idy = 1.0/p.dy;
-  Real idx2 = 1.0/(p.dx*p.dx);
-  Real idy2 = 1.0/(p.dy*p.dy);
+void computeF(Parameters p, real dt, matrix* U, matrix* V, matrix* F){
+  real gamma = computeGamma(U,V,p.dx,p.dy,dt);
+  real dx2u, dy2u, dxu2, dyuv;
+  real idx = 1.0/p.dx;
+  real idy = 1.0/p.dy;
+  real idx2 = 1.0/(p.dx*p.dx);
+  real idy2 = 1.0/(p.dy*p.dy);
 
   for (int j=1; j<=p.jmax; j++){
     for (int i=1; i<=p.imax-1; i++){
@@ -120,13 +120,13 @@ void computeF(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* F){
 //--------------------------------------------------
 //  Compute G
 //--------------------------------------------------
-void computeG(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* G){
-  Real gamma = computeGamma(U,V,p.dx,p.dy,dt);
-  Real dx2v, dy2v, dyv2, dxuv;
-  Real idx = 1.0/p.dx;
-  Real idy = 1.0/p.dy;
-  Real idx2 = 1.0/(p.dx*p.dx);
-  Real idy2 = 1.0/(p.dy*p.dy);
+void computeG(Parameters p, real dt, matrix* U, matrix* V, matrix* G){
+  real gamma = computeGamma(U,V,p.dx,p.dy,dt);
+  real dx2v, dy2v, dyv2, dxuv;
+  real idx = 1.0/p.dx;
+  real idy = 1.0/p.dy;
+  real idx2 = 1.0/(p.dx*p.dx);
+  real idy2 = 1.0/(p.dy*p.dy);
 
   for (int i=1; i<=p.imax; i++){
     for (int j=1; j<=p.jmax-1; j++){
@@ -163,10 +163,10 @@ void computeG(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* G){
 //--------------------------------------------------
 //  Compute RHS: 1/dt * ((Fij - Fi-1,j)/dx + (Gij-Gij-1)/dy)
 //--------------------------------------------------
-void computeRHS(Parameters p, Real dt, Matrix* F, Matrix* G, Matrix* RHS){
-  Real idx = 1.0/p.dx;
-  Real idy = 1.0/p.dy;
-  Real idt = 1.0/dt;
+void computeRHS(Parameters p, real dt, matrix* F, matrix* G, matrix* RHS){
+  real idx = 1.0/p.dx;
+  real idy = 1.0/p.dy;
+  real idt = 1.0/dt;
 
   for (int i=1; i<=p.imax; i++){
     for (int j=1; j<=p.jmax; j++){
@@ -184,13 +184,13 @@ void computeRHS(Parameters p, Real dt, Matrix* F, Matrix* G, Matrix* RHS){
 // Use pt1 as input as the time step t and
 // as output for time step t+1
 //--------------------------------------------------
-void computeP(Parameters p, Matrix* rhs, Matrix* P){
-  Real idx2 = 1.0/(p.dx*p.dx);
-  Real idy2 = 1.0/(p.dy*p.dy);
-  Real coeff = p.omega/( 2.0*(idx2+idy2) );
+void computeP(Parameters p, matrix* rhs, matrix* P){
+  real idx2 = 1.0/(p.dx*p.dx);
+  real idy2 = 1.0/(p.dy*p.dy);
+  real coeff = p.omega/( 2.0*(idx2+idy2) );
 
   int it = 1;
-  Real res;
+  real res;
 
   do{
     res = 0.0;
@@ -238,9 +238,9 @@ void computeP(Parameters p, Matrix* rhs, Matrix* P){
 //--------------------------------------------------
 //  Compute u, v at time step +1 (eq 3.34, 3.35, page 34)
 //--------------------------------------------------
-void computeNewVel(Parameters p, Real delt, Matrix* F, Matrix* G, Matrix* P, Matrix* U, Matrix* V){
-  Real dtdx = delt/p.dx;
-  Real dtdy = delt/p.dy;
+void computeNewVel(Parameters p, real delt, matrix* F, matrix* G, matrix* P, matrix* U, matrix* V){
+  real dtdx = delt/p.dx;
+  real dtdy = delt/p.dy;
 
   for (int i=1 ; i<=p.imax-1; i++){
     for (int j=1; j<=p.jmax; j++){

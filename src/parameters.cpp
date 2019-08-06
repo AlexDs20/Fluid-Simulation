@@ -11,7 +11,7 @@ Parameters::Parameters(string inputfile){
   ifstream in;
   string line;
   string var, eqs;
-  Real val;
+  real val;
 
   in.open(inputfile);
   if (in.is_open()){
@@ -68,11 +68,11 @@ Parameters::Parameters(string inputfile){
   }else{
     cout << "Did not manage to open the input file!" << endl;
   }
-  dx = xlength/(Real)(imax);
-  dy = ylength/(Real)(jmax);
+  dx = xlength/(real)(imax);
+  dy = ylength/(real)(jmax);
 }
 
-void Parameters::setScale(Real uMax, Real vMax, Real pMax){
+void Parameters::setScale(real uMax, real vMax, real pMax){
   L = std::max(xlength,ylength);
   uInf = std::max(uMax,vMax);
   pInf = pMax;
@@ -81,7 +81,7 @@ void Parameters::setScale(Real uMax, Real vMax, Real pMax){
   std::cout << "The Reynold number is: " << Re << std::endl;
 }
 
-void Parameters::toDimensionless(Matrix* U, Matrix* V, Matrix* P){
+void Parameters::toDimensionless(matrix* U, matrix* V, matrix* P){
   xlength = xlength/L;
   ylength = ylength/L;
   t_end = uInf*t_end/L;
@@ -95,7 +95,7 @@ void Parameters::toDimensionless(Matrix* U, Matrix* V, Matrix* P){
   }
 }
 
-void Parameters::toDimensional(Matrix* U, Matrix* V, Matrix* P){
+void Parameters::toDimensional(matrix* U, matrix* V, matrix* P){
   xlength = xlength*L;
   ylength = ylength*L;
   t_end = t_end*L/uInf;

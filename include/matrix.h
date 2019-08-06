@@ -2,21 +2,21 @@
 #include <vector>
 #include "definitions.h"
 
-class Matrix{
+class matrix{
   private:
     int width, height;
-    Real inVal;
-    std::vector<Real> val;
+    real inVal;
+    std::vector<real> val;
     int idx(int i, int j);
 
   public:
-    Matrix(int w, int h, Real inVal);
-    Matrix(int w, int h);
+    matrix(int w, int h, real inVal);
+    matrix(int w, int h);
 
-    Real get(int i, int j);
-    std::vector<Real> getAll();
-    void set(int i, int j, Real inVal);   // Set specific index val
-    Real max();
-    Real min();
-    Real amax();
+    real get(int i, int j);
+    std::vector<real> getAll();
+    void set(int i, int j, real inVal);   // Set specific index val
+    real max();
+    real min();
+    real amax();
 };

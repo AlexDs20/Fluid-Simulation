@@ -4,8 +4,8 @@ using namespace std;
 
 #include "boundary.h"
 
-void setBoundaries(Parameters p, Matrix* U, Matrix* V){
-  Real inflow = 10.0;
+void setBoundaries(Parameters p, matrix* U, matrix* V){
+  real inflow = 10.0;
 
 // Problem in the corners:
 // if a corner has 1 bonudary with no slip and one with free slip,
@@ -111,9 +111,9 @@ void setBoundaries(Parameters p, Matrix* U, Matrix* V){
   }
 }
 
-void setSpecificBoundaries(Parameters p, Matrix* U, Matrix* V){
+void setSpecificBoundaries(Parameters p, matrix* U, matrix* V){
   if (true){
-    Real inflow = 10;
+    real inflow = 10;
     for (int j=p.jmax/2-2;j<p.jmax/2+2;j++){
       U->set(0,j,         std::abs(inflow));
       V->set(0,j,        -V->get(1,j));

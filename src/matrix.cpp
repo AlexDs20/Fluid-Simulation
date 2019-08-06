@@ -7,12 +7,12 @@ using namespace std;
 
 //--------------------------------------------------
 //  Constructors
-Matrix::Matrix(int w, int h, Real inVal){
+matrix::matrix(int w, int h, real inVal){
   width = w;
   height = h;
   val.resize(w*h,inVal);
 }
-Matrix::Matrix(int w, int h){
+matrix::matrix(int w, int h){
   width = w;
   height = h;
   val.resize(w*h);
@@ -20,7 +20,7 @@ Matrix::Matrix(int w, int h){
 
 //--------------------------------------------------
 //  Linear index of the (i,j)
-int Matrix::idx(int i, int j){
+int matrix::idx(int i, int j){
   if (i>width-1 || j>height-1){
     std::cout << "requested index out of bound!" << std::endl;
   }
@@ -29,33 +29,33 @@ int Matrix::idx(int i, int j){
 
 //--------------------------------------------------
 //  Element i,j
-Real Matrix::get(int i, int j){
+real matrix::get(int i, int j){
   return val[idx(i,j)];
 }
 
 //--------------------------------------------------
 //  Return all values
-vector<Real> Matrix::getAll(){
+vector<real> matrix::getAll(){
   return val;
 }
 
 //--------------------------------------------------
 //  Set Specific value
-void Matrix::set(int i, int j, Real inVal){
+void matrix::set(int i, int j, real inVal){
   val[idx(i,j)] = inVal;
 }
 
 //--------------------------------------------------
 //  Maximum
-Real Matrix::max(){
+real matrix::max(){
   return *std::max_element(std::begin(val),std::end(val));
 }
 //  Minimum
-Real Matrix::min(){
+real matrix::min(){
   return *std::min_element(std::begin(val),std::end(val));
 }
 
 //  Maximum in absolute value
-Real Matrix::amax(){
-  return std::max(std::abs(Matrix::max()),std::abs(Matrix::min()));
+real matrix::amax(){
+  return std::max(std::abs(matrix::max()),std::abs(matrix::min()));
 }

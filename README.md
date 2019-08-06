@@ -8,12 +8,12 @@ Even though it requires mpich for compiling, nothing is parallelized yet.
 ## To run
 ```
 make clean
-make 
+make
 make run
 ```
 
 ### The input
-The input for the simulation are given in IO/input:
+The inputs for the simulation are given in IO/input:
 
 Inputs     | what it does
 -----------|--------------
@@ -29,7 +29,7 @@ Inputs     | what it does
 *omega*    |   coeff in the SOR algo
 *Re*       |   Reynolds number
 *gx*       |   external force along x
-*gy*       |   external force along y                        
+*gy*       |   external force along y
 *UI*       |   Initial velocity along x (given in the whole domain)
 *VI*       |   Initial velocity along y (given in the whole domain)
 *PI*       |   Initial pressure (given in the whole domain)
