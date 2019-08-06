@@ -7,3 +7,4 @@ using namespace std;
 #include "matrix.h"
 
 void setBoundaries(Parameters p, Matrix* U, Matrix* V);
+void setSpecificBoundaries(Parameters p, Matrix* U, Matrix*);

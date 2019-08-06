@@ -54,3 +54,7 @@ Real Matrix::max(){
 Real Matrix::min(){
   return *std::min_element(std::begin(val),std::end(val));
 }
+//  Maximum in absolute value
+Real Matrix::amax(){
+  return std::max(std::abs(Matrix::max()),std::abs(Matrix::min()));
+}

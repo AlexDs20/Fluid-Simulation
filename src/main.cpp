@@ -7,12 +7,11 @@
 
 using namespace std;
 
+#include "definitions.h"
 #include "boundary.h"
-#include "collection.h"
+#include "compute.h"
 #include "matrix.h"
 #include "parameters.h"
-
-#define Real float
 
 int main(int , char *argv[]){
 //-------------------------
@@ -47,35 +46,35 @@ Matrix RHS((p.imax+2),(p.jmax+2));
 //-------------------------
 //  Set scale parameters
 //  and Reynolds number
-p.setScale(std::max({std::abs(U.max()),std::abs(U.min())}),
-           std::max({std::abs(V.max()),std::abs(V.min())}),
-           P.max());
+// p.setScale(std::max(U.max(),std::abs(U.min())),
+//            std::max(V.max(),std::abs(V.min())),
+//            P.max());
 //-------------------------
 //  Go to dimensionless
 //  variables
-p.toDimensionless(&U, &V, &P);
+// p.toDimensionless(&U, &V, &P);
 
 //-------------------------
 // Create a boundary Matrix
 /*
-To be done: Create a vector that would contain values indicating whether it is a boundary or not.
-The boundary values for the field should then be changed accordingly to that vector
+To be done: Create a matrix that would contain values indicating whether it is a boundary or not.
+The boundary values for the field should then be changed accordingly to the boudaries
 */
 
 while (t<p.t_end){
   //-------------------------
   // Calculate time step
-  std::cout << t/p.t_end << "%" << std::endl;
-  delt = calcDT(p,U.max(),V.max());
+  std::cout << t*100.0/p.t_end << "%" << std::endl;
+  delt = computeDT(p,U.amax(),V.amax());
 
   //-------------------------
   // Boundary Conditions
   setBoundaries(p,&U,&V);
-//  U.setUBoundCond(p.wW,p.wE,p.wS,p.wN);
-//  V.setVBoundCond(p.wW,p.wE,p.wS,p.wN);
+  setSpecificBoundaries(p,&U,&V);
+
 
   //-------------------------
-  //  Compute F
+  //  Compute F and G
   computeF(p,delt,&U,&V,&F);
   computeG(p,delt,&U,&V,&G);
 
@@ -84,21 +83,17 @@ while (t<p.t_end){
   computeRHS(p,delt,&F,&G,&RHS);
 
   //-------------------------
-  //  Compute Pressure at
+  //  Push Pressure to
   //  the next time step
-  //
-  //  &P serves as input
-  //  and output
-  //-------------------------
-  computePt1(p,&RHS,&P);
+  computeP(p,&RHS,&P);
 
   //-------------------------
   //  Compute new velocities
-  computeNewVel(p,&F,&G,&P,&U,&V);
+  computeNewVel(p,delt,&F,&G,&P,&U,&V);
 
   //-------------------------
   // Write output
-  writeData(outputfile,U.getAll());
+  writeOutput(outputfile,&U,&V,&P);
 
   t += delt;
 }

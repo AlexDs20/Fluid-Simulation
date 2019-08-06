@@ -36,8 +36,8 @@ Parameters::Parameters(string inputfile){
         eps = val;}
       else if ( var.compare("omega") == 0 ){
         omega = val;}
-//      else if ( var.compare("Re") == 0 ){
-//        Re = val;}
+      else if ( var.compare("Re") == 0 ){
+        Re = val;}
       else if ( var.compare("gx") == 0 ){
         gx = val;}
       else if ( var.compare("gy") == 0 ){
@@ -68,16 +68,17 @@ Parameters::Parameters(string inputfile){
   }else{
     cout << "Did not manage to open the input file!" << endl;
   }
-  dx = xlength/imax;
-  dy = ylength/jmax;
+  dx = xlength/(Real)(imax);
+  dy = ylength/(Real)(jmax);
 }
 
 void Parameters::setScale(Real uMax, Real vMax, Real pMax){
-  L = std::max({xlength,ylength});
-  uInf = std::max({uMax,vMax});
+  L = std::max(xlength,ylength);
+  uInf = std::max(uMax,vMax);
   pInf = pMax;
   rhoInf = rho;
   Re = rhoInf*uInf*L/vis;
+  std::cout << "The Reynold number is: " << Re << std::endl;
 }
 
 void Parameters::toDimensionless(Matrix* U, Matrix* V, Matrix* P){

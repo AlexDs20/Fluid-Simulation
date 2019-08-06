@@ -2,15 +2,15 @@
 #include <vector>
 using namespace std;
 
+#include "definitions.h"
 #include "parameters.h"
 #include "matrix.h"
 
-#define Real float
-
 // Compute the time step
-Real calcDT(Parameters p, Real umax, Real vmax);
+Real computeDT(Parameters p, Real umax, Real vmax);
 // write vector data to a file
 void writeData(string file, std::vector<Real> v);
+void writeOutput(string file, Matrix* U, Matrix* V, Matrix* P);
 // Compute the gamma factor needed in F and G
 Real computeGamma(Matrix* U, Matrix* V, Real dx, Real dy, Real dt);
 // Compute F and G which depends on u,v, their derivatives
@@ -20,6 +20,6 @@ void computeG(Parameters p, Real dt, Matrix* U, Matrix* V, Matrix* G);
 void computeRHS(Parameters p, Real dt, Matrix* F, Matrix* G,Matrix* RHS);
 // Compute the value of the pressure for the following time step
 // eq 3.44 without eps and with 3.48 boundary conditions
-void computePt1(Parameters p, Matrix* rhs, Matrix* pt1);
+void computeP(Parameters p, Matrix* rhs, Matrix* pt1);
 // Compute the velocities at the following time step
-void computeNewVel(Parameters p, Matrix* F, Matrix* G, Matrix* P, Matrix* U, Matrix* V);
+void computeNewVel(Parameters p, Real dt,Matrix* F, Matrix* G, Matrix* P, Matrix* U, Matrix* V);
