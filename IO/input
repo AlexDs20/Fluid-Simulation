@@ -1,7 +1,7 @@
-xlength = 1
+xlength = 2
 ylength = 1
-imax = 50
-jmax = 50
+imax = 512
+jmax = 256
 dt = 0.05
 t_end = 1
 tau = 0.5
