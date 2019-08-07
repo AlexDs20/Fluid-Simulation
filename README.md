@@ -3,7 +3,6 @@
 This simulation is implemented in C++ and follows the description given in Numerical simulation in Fluid Dynamics A Practical Introduction by M. Griebel, T. Dornseifer and T. Neunhoeffer.
 
 ### What is implemented
-
 - [x] 2D simulation in a rectangular grid
 - [x] Incompressible fluid
 - [x] 5 different boundary conditions at the edges of the grid: no-slip, free-slip,
