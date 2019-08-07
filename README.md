@@ -2,17 +2,40 @@
 
 This simulation is implemented in C++ and follows the description given in Numerical simulation in Fluid Dynamics A Practical Introduction by M. Griebel, T. Dornseifer and T. Neunhoeffer.
 
-Currently, it is only in 2D and only the boundary conditions at the edges of the box have been implemented.
-Even though it requires mpich for compiling, nothing is parallelized yet.
+### What is implemented
 
-## To run
-```
-make clean
-make
-make run
-```
+- [x] 2D simulation in a rectangular grid
+- [x] Incompressible fluid
+- [x] 5 different boundary conditions at the edges of the grid: no-slip, free-slip,
+- [x] outflow, inflow, periodic boundaries
+- [x] A python script to visualise the output
 
-### The input
+### What is *not* implemented
+
+- [ ] Interpolation of the output data to make a correct quiver plot
+- [ ] Obstacles inside the domain
+- [ ] Obstacles moving due to the flow
+- [ ] 3D simulation
+- [ ] Parallelized computation
+
+### What is required
+
+All of this was developed on a linux machine and may not work directly on
+Windows or Mac.
+
+* mpich package (openMPI, g++) for compiling and running (even though parallel computation is not implemented yet).
+I use version 3.3.1-1 of mpich found on the AUR.
+
+* python to visualise the output. I use python 3.7
+
+## A typical run
+
+A typical run would consist of 3 steps:
+1) Set the inputs for the desired simulation
+2) Run the simulation
+3) Look at the outputs
+
+### The input file
 The inputs for the simulation are given in IO/input:
 
 Inputs     | what it does
@@ -44,11 +67,9 @@ Inputs     | what it does
 
 
 The values of *rho* and *dynvis* are not currently used.
-
 I hesitated between requesting physical inputs values or dimensionless inputs.
 
-Currently the inputs should be dimensionless and these parameters are hence useless.
-
+Currently the inputs should be dimensionless and the parameters *rho* and *dynvis* are hence useless.
 
 
 The *wW*, *wE*, *wS*, *wN* can take 5 values: 1, 2, 3 ,4 or 5.
@@ -60,8 +81,17 @@ A value of:
 * 5: indicates periodic boundaries. For this one to work, the pair wW and wE or the pair wS and wN should be given the value 5.
 
 
+### To run
 
-## To visualise
+Simply enter the followings in the terminal:
+```
+make clean
+make
+make run
+```
+
+
+### To visualise the output
 
 Go the the plot directory and run:
 ```
@@ -70,11 +100,3 @@ Go the the plot directory and run:
 
 Note that the output of the simulation of the velocities are at the border of the cells,
 to make a quiver plot starting from the center of the cells, the values of the velocity fields must be evaluated there first.
-
-## On the to do list:
-
-- [ ] Implementing obstacle within the domain so that the user can simulate whatever he wants.
-- [ ] Paralellizing the code.
-- [ ] Making the possibility for the obstacle to be moved by the flows.
-- [ ] Giving the possibility to do 3D simulations
-- [ ] Making the quiver plot to visualise the velocity field.

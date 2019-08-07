@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -101,7 +101,7 @@ for i,line in enumerate(Ulines):
         imP.set_data(PdataResh)
         imP.set_clim(vmin=np.amin(Pdata),vmax=np.amax(Pdata))
 
-    plt.pause(0.01)
+    plt.pause(0.001)
 
 plt.show()
 
