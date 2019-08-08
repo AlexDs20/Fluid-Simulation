@@ -34,6 +34,7 @@ template real matrix<real>::min();
 
 template int matrix<int>::amax();
 template real matrix<real>::amax();
+//--------------------------------------------------
 
 
 //--------------------------------------------------

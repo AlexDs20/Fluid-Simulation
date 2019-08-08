@@ -9,6 +9,7 @@
 #include "compute.h"
 #include "definitions.h"
 #include "matrix.h"
+#include "obstacle.h"
 #include "parameters.h"
 
 using namespace std;
@@ -41,8 +42,8 @@ matrix<real> P(p.imax+2,p.jmax+2,p.PI);
 matrix<real> F((p.imax+2),(p.jmax+2));
 matrix<real> G((p.imax+2),(p.jmax+2));
 matrix<real> RHS((p.imax+2),(p.jmax+2));
-// Create the inner boundaries
-matrix<real> obs(p.imax+2,p.jmax+2,obsfile);
+// Create the obstacles
+obstacle Obs(p.imax+2,p.jmax+2,obsfile);
 
 //-------------------------
 //  Set scale parameters
@@ -58,13 +59,14 @@ matrix<real> obs(p.imax+2,p.jmax+2,obsfile);
 while (t<p.t_end){
   //-------------------------
   // Calculate time step
-  // std::cout << t*100.0/p.t_end << "%" << std::endl;
+  std::cout << t*100.0/p.t_end << "%" << std::endl;
   delt = computeDT(p,U.amax(),V.amax());
 
   //-------------------------
   // Boundary Conditions
   setBoundaries(p,&U,&V);
   setSpecificBoundaries(p,&U,&V);
+  // setObstaclesBoundaries(&U,&V,&Obs);
 
 
   //-------------------------

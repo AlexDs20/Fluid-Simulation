@@ -73,7 +73,7 @@ Currently the inputs should be dimensionless and the parameters *rho* and *dynvi
 The *wW*, *wE*, *wS*, *wN* can take 5 values: 1, 2, 3 ,4 or 5.
 A value of:
 * 1: indicates the no slip condition i.e. all the velocities vanish at the boundary
-* 2: indicates the free slip condition i.e. normal velocity is 0 but the tangential is free.
+* 2: indicates the free slip condition i.e. normal velocity is 0 but the tangential is "free" ($ \frac{\partial \phi_t}{\partial n} = 0 $).
 * 3: indicates outflow i.e. the fluid simply gets out of the domain.
 * 4: indicates inflow i.e. fluid enters the domain. (There is no current input for the velocity of the flow, it is hard coded in the boundary.cpp file)
 * 5: indicates periodic boundaries. For this one to work, the pair wW and wE or the pair wS and wN should be given the value 5.

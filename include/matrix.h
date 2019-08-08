@@ -9,10 +9,12 @@ using namespace std;
 template <typename T>
 class matrix{
   private:
-    int width, height;
-    vector<T> val;
-    int idx(int i, int j);
     void assignValues(string file);
+
+  protected:
+    int width, height;
+    int idx(int i, int j);
+    vector<T> val;
 
   public:
     matrix(int w, int h);   // simple mem alloc

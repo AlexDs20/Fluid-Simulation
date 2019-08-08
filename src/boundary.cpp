@@ -138,3 +138,152 @@ void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
     }
   }
 }
+
+void setObstaclesBoundaries(matrix<real>* U, matrix<real>* V, obstacle* Obs){
+  int i,j;
+  for (int it=1;it<3;it++){
+    //-------------------------------
+    //  FREE SLIP CONDITIONS
+    //-------------------------------
+    // North (i.e. values should be similar as to wS)
+    for (int k=0; k<=(int)Obs->FS_N.size();k++){
+      Obs->getIJ(B_FS_N,k,&i,&j);
+
+      U->set(i,j,         U->get(i,j+1));
+      U->set(i-1,j,       U->get(i-1,j+1));
+      V->set(i,j,         0.0);
+    }
+    // South
+    for (int k=0; k<=(int)Obs->FS_S.size();k++){
+      Obs->getIJ(B_FS_S,k,&i,&j);
+
+      U->set(i,j,         U->get(i,j-1));
+      U->set(i-1,j,       U->get(i-1,j-1));
+      V->set(i,j-1,       0.0);
+    }
+    // West
+    for (int k=0; k<=(int)Obs->FS_W.size();k++){
+      Obs->getIJ(B_FS_W,k,&i,&j);
+
+      U->set(i-1,j,       0.0);
+      V->set(i,j,         V->get(i-1,j));
+      V->set(i,j-1,       V->get(i-1,j-1));
+    }
+    // East
+    for (int k=0; k<=(int)Obs->FS_E.size();k++){
+      Obs->getIJ(B_FS_E,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      V->set(i,j,         V->get(i+1,j));
+      V->set(i,j-1,       V->get(i+1,j-1));
+    }
+    // NW
+    for (int k=0; k<=(int)Obs->FS_NW.size();k++){
+      Obs->getIJ(B_FS_NW,k,&i,&j);
+
+      U->set(i-1,j,       0.0);
+      U->set(i,j,         U->get(i,j+1));
+      V->set(i,j,         0.0);
+      V->set(i,j-1,       V->get(i-1,j-1));
+    }
+    // NE
+    for (int k=0; k<=(int)Obs->FS_NE.size();k++){
+      Obs->getIJ(B_FS_NE,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      U->set(i-1,j,       U->get(i-1,j+1));
+      V->set(i,j,         0.0);
+      V->set(i,j-1,       V->get(i+1,j-1));
+    }
+    // SW
+    for (int k=0; k<=(int)Obs->FS_SW.size();k++){
+      Obs->getIJ(B_FS_SW,k,&i,&j);
+
+      U->set(i,j,         U->get(i,j-1));
+      U->set(i-1,j,       0.0);
+      V->set(i,j-1,       0.0);
+      V->set(i,j,         V->get(i-1,j));
+    }
+    // SE
+    for (int k=0; k<=(int)Obs->FS_SE.size();k++){
+      Obs->getIJ(B_FS_SE,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      U->set(i-1,j,       U->get(i-1,j-1));
+      V->set(i,j,         V->get(i,j+1));
+      V->set(i,j-1,       0.0);
+    }
+    //-------------------------------
+    //  NO SLIP CONDITIONS
+    //-------------------------------
+    // North (i.e. values should be similar as to wS)
+    for (int k=0; k<=(int)Obs->NS_N.size();k++){
+      Obs->getIJ(B_NS_N,k,&i,&j);
+
+      U->set(i,j,         -U->get(i,j+1));
+      U->set(i-1,j,       -U->get(i-1,j+1));
+      V->set(i,j,         0.0);
+    }
+    // South
+    for (int k=0; k<=(int)Obs->NS_S.size();k++){
+      Obs->getIJ(B_NS_S,k,&i,&j);
+
+      U->set(i,j,         -U->get(i,j-1));
+      U->set(i-1,j,       -U->get(i-1,j-1));
+      V->set(i,j-1,       0.0);
+    }
+    // West
+    for (int k=0; k<=(int)Obs->NS_W.size();k++){
+      Obs->getIJ(B_NS_W,k,&i,&j);
+
+      U->set(i-1,j,       0.0);
+      V->set(i,j,         -V->get(i-1,j));
+      V->set(i,j-1,       -V->get(i-1,j-1));
+    }
+    // East
+    for (int k=0; k<=(int)Obs->NS_E.size();k++){
+      Obs->getIJ(B_NS_E,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      V->set(i,j,         -V->get(i+1,j));
+      V->set(i,j-1,       -V->get(i+1,j-1));
+    }
+    // NW
+    for (int k=0; k<=(int)Obs->NS_NW.size();k++){
+      Obs->getIJ(B_NS_NW,k,&i,&j);
+
+      U->set(i-1,j,       0.0);
+      U->set(i,j,         -U->get(i,j+1));
+      V->set(i,j,         0.0);
+      V->set(i,j-1,       -V->get(i-1,j-1));
+    }
+    // NE
+    for (int k=0; k<=(int)Obs->NS_NE.size();k++){
+      Obs->getIJ(B_NS_NE,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      U->set(i-1,j,       -U->get(i-1,j+1));
+      V->set(i,j,         0.0);
+      V->set(i,j-1,       -V->get(i+1,j-1));
+    }
+    // SW
+    for (int k=0; k<=(int)Obs->NS_SW.size();k++){
+      Obs->getIJ(B_NS_SW,k,&i,&j);
+
+      U->set(i,j,         -U->get(i,j-1));
+      U->set(i-1,j,       0.0);
+      V->set(i,j-1,       0.0);
+      V->set(i,j,         -V->get(i-1,j));
+    }
+    // SE
+    for (int k=0; k<=(int)Obs->NS_SE.size();k++){
+      Obs->getIJ(B_NS_SE,k,&i,&j);
+
+      U->set(i,j,         0.0);
+      U->set(i-1,j,       -U->get(i-1,j-1));
+      V->set(i,j,         -V->get(i,j+1));
+      V->set(i,j-1,       0.0);
+    }
+
+  }
+}
