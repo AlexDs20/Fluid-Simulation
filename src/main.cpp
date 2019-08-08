@@ -66,13 +66,13 @@ while (t<p.t_end){
   // Boundary Conditions
   setBoundaries(p,&U,&V);
   setSpecificBoundaries(p,&U,&V);
-  // setObstaclesBoundaries(&U,&V,&Obs);
+  setObsVelBoundaries(&Obs,&U,&V);
 
 
   //-------------------------
   //  Compute F and G
-  computeF(p,delt,&U,&V,&F);
-  computeG(p,delt,&U,&V,&G);
+  computeF(p,delt,&Obs,&U,&V,&F);
+  computeG(p,delt,&Obs,&U,&V,&G);
 
   //-------------------------
   //  Compute RHS

@@ -139,7 +139,7 @@ void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
   }
 }
 
-void setObstaclesBoundaries(matrix<real>* U, matrix<real>* V, obstacle* Obs){
+void setObsVelBoundaries(obstacle* Obs, matrix<real>* U, matrix<real>* V){
   int i,j;
   for (int it=1;it<3;it++){
     //-------------------------------
@@ -285,5 +285,87 @@ void setObstaclesBoundaries(matrix<real>* U, matrix<real>* V, obstacle* Obs){
       V->set(i,j-1,       0.0);
     }
 
+  }
+}
+
+void setObsFBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* U){
+  switch(bType){
+    case B_FS_W:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_FS_E:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_FS_NW:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_FS_NE:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_FS_SW:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_FS_SE:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_NS_W:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_NS_E:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_NS_NW:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_NS_NE:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_NS_SW:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_NS_SE:
+      F->set(i,j,     U->get(i,j));
+      break;
+  }
+}
+
+void setObsGBoundaries(int i, int j, int bType, matrix<real>* G, matrix<real>* V){
+  switch(bType){
+    case B_FS_N:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_S:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_FS_NW:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_NE:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_SW:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_FS_SE:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_NS_N:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_S:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_NS_NW:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_NE:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_SW:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_NS_SE:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
   }
 }

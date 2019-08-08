@@ -6,7 +6,9 @@
 #include <vector>
 
 #include "compute.h"
+#include "boundary.h"
 #include "matrix.h"
+#include "obstacle.h"
 
 using namespace std;
 
@@ -77,7 +79,7 @@ real computeGamma(matrix<real>* U, matrix<real>* V, real dx, real dy, real dt){
 //--------------------------------------------------
 //  Compute F
 //--------------------------------------------------
-void computeF(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<real>* F){
+void computeF(Parameters p, real dt, obstacle* Obs, matrix<real>* U, matrix<real>* V, matrix<real>* F){
   real gamma = computeGamma(U,V,p.dx,p.dy,dt);
   real dx2u, dy2u, dxu2, dyuv;
   real idx = 1.0/p.dx;
@@ -87,29 +89,38 @@ void computeF(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<re
 
   for (int j=1; j<=p.jmax; j++){
     for (int i=1; i<=p.imax-1; i++){
-      // Computes d^2u/dx^2
-      dx2u = ( U->get(i+1,j) - 2.0*U->get(i,j) + U->get(i-1,j) ) * idx2;
-      // Computes d^2u/dy^2
-      dy2u = ( U->get(i,j+1) - 2.0*U->get(i,j) + U->get(i,j-1) ) * idy2;
-      // Computes du^2/dx
-      dxu2 = (idx/4.0)*
-        ( pow( U->get(i,j)+U->get(i+1,j) ,2) - pow( U->get(i-1,j)+U->get(i,j) ,2) )
-        + (gamma*idx/4.0)*
-        ( abs(U->get(i,j)   + U->get(i+1,j)) * (U->get(i,j)   - U->get(i+1,j)) -
-          abs(U->get(i-1,j) + U->get(i,j)  ) * (U->get(i-1,j) - U->get(i,j)  )
-        );
-      // Computes duv/dy
-      dyuv = (idy/4.0)*
-        ( (V->get(i,j)   + V->get(i+1,j)  ) * (U->get(i,j)   + U->get(i,j+1)) -
-          (V->get(i,j-1) + V->get(i+1,j-1)) * (U->get(i,j-1) + U->get(i,j)  )
-        )
-        + (gamma*idy/4.0)*
-        ( abs(V->get(i,j)   + V->get(i+1,j)  ) * (U->get(i,j)   - U->get(i,j+1)) -
-          abs(V->get(i,j-1) + V->get(i+1,j-1)) * (U->get(i,j-1) - U->get(i,j)  )
-        );
 
-      // Computes F
-      F->set(i,j, U->get(i,j)+dt*( (1.0/p.Re)*( dx2u+dy2u ) -dxu2-dyuv+p.gx ));
+      // Check if fluid value, if so calculate the velocity stuff
+      if (Obs->get(i,j)==FC){
+
+        // Computes d^2u/dx^2
+        dx2u = ( U->get(i+1,j) - 2.0*U->get(i,j) + U->get(i-1,j) ) * idx2;
+        // Computes d^2u/dy^2
+        dy2u = ( U->get(i,j+1) - 2.0*U->get(i,j) + U->get(i,j-1) ) * idy2;
+        // Computes du^2/dx
+        dxu2 = (idx/4.0)*
+          ( pow( U->get(i,j)+U->get(i+1,j) ,2) - pow( U->get(i-1,j)+U->get(i,j) ,2) )
+          + (gamma*idx/4.0)*
+          ( abs(U->get(i,j)   + U->get(i+1,j)) * (U->get(i,j)   - U->get(i+1,j)) -
+            abs(U->get(i-1,j) + U->get(i,j)  ) * (U->get(i-1,j) - U->get(i,j)  )
+          );
+        // Computes duv/dy
+        dyuv = (idy/4.0)*
+          ( (V->get(i,j)   + V->get(i+1,j)  ) * (U->get(i,j)   + U->get(i,j+1)) -
+            (V->get(i,j-1) + V->get(i+1,j-1)) * (U->get(i,j-1) + U->get(i,j)  )
+          )
+          + (gamma*idy/4.0)*
+          ( abs(V->get(i,j)   + V->get(i+1,j)  ) * (U->get(i,j)   - U->get(i,j+1)) -
+            abs(V->get(i,j-1) + V->get(i+1,j-1)) * (U->get(i,j-1) - U->get(i,j)  )
+          );
+
+        // Computes F
+        F->set(i,j, U->get(i,j)+dt*( (1.0/p.Re)*( dx2u+dy2u ) -dxu2-dyuv+p.gx ));
+
+      // Set boundary values for F
+      }else{
+        setObsFBoundaries(i,j,Obs->get(i,j),F,U);
+      }
     }
     F->set(0,j,      U->get(0,j));
     F->set(p.imax,j, U->get(p.imax,j));
@@ -120,7 +131,7 @@ void computeF(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<re
 //--------------------------------------------------
 //  Compute G
 //--------------------------------------------------
-void computeG(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<real>* G){
+void computeG(Parameters p, real dt, obstacle* Obs, matrix<real>* U, matrix<real>* V, matrix<real>* G){
   real gamma = computeGamma(U,V,p.dx,p.dy,dt);
   real dx2v, dy2v, dyv2, dxuv;
   real idx = 1.0/p.dx;
@@ -130,29 +141,39 @@ void computeG(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<re
 
   for (int i=1; i<=p.imax; i++){
     for (int j=1; j<=p.jmax-1; j++){
-      // Computes d^2v/dx^2
-      dx2v = ( V->get(i+1,j) - 2.0*V->get(i,j) + V->get(i-1,j) ) * idx2;
-      // Computes d^2v/dy^2
-      dy2v = ( V->get(i,j+1) - 2.0*V->get(i,j) + V->get(i,j-1) ) * idy2;
-      // Computes dv^2/dy
-      dyv2 = (idy/4.0)*
-        ( pow( V->get(i,j)+V->get(i,j+1) ,2) - pow( V->get(i,j-1)+V->get(i,j) ,2) )
-        + (gamma*idy/4.0)*
-        ( abs( V->get(i,j)   + V->get(i,j+1)) * (V->get(i,j)   - V->get(i,j+1)) -
-          abs( V->get(i,j-1) + V->get(i,j)  ) * (V->get(i,j-1) - V->get(i,j)  )
-        );
-      // Computes duv/dx
-      dxuv = (idx/4.0)*
-        ( (U->get(i,j)   + U->get(i,j+1)  ) * (V->get(i,j)   + V->get(i+1,j)) -
-          (U->get(i-1,j) + U->get(i-1,j+1)) * (V->get(i-1,j) + V->get(i,j)  )
-        )
-        + (gamma*idx/4.0)*
-        ( abs( U->get(i,j)   + U->get(i,j+1)   ) * (V->get(i,j)   - V->get(i+1,j)) -
-          abs( U->get(i-1,j) + U->get(i-1,j+1) ) * (V->get(i-1,j) - V->get(i,j)  )
-        );
 
-      // Computes G
-      G->set(i,j, V->get(i,j)+dt* ((1.0/p.Re)*(dx2v+dy2v) -dyv2-dxuv+p.gy) );
+      // Check if fluid value, if so calculate the velocity stuff
+      if (Obs->get(i,j)==FC){
+
+        // Computes d^2v/dx^2
+        dx2v = ( V->get(i+1,j) - 2.0*V->get(i,j) + V->get(i-1,j) ) * idx2;
+        // Computes d^2v/dy^2
+        dy2v = ( V->get(i,j+1) - 2.0*V->get(i,j) + V->get(i,j-1) ) * idy2;
+        // Computes dv^2/dy
+        dyv2 = (idy/4.0)*
+          ( pow( V->get(i,j)+V->get(i,j+1) ,2) - pow( V->get(i,j-1)+V->get(i,j) ,2) )
+          + (gamma*idy/4.0)*
+          ( abs( V->get(i,j)   + V->get(i,j+1)) * (V->get(i,j)   - V->get(i,j+1)) -
+            abs( V->get(i,j-1) + V->get(i,j)  ) * (V->get(i,j-1) - V->get(i,j)  )
+          );
+        // Computes duv/dx
+        dxuv = (idx/4.0)*
+          ( (U->get(i,j)   + U->get(i,j+1)  ) * (V->get(i,j)   + V->get(i+1,j)) -
+            (U->get(i-1,j) + U->get(i-1,j+1)) * (V->get(i-1,j) + V->get(i,j)  )
+          )
+          + (gamma*idx/4.0)*
+          ( abs( U->get(i,j)   + U->get(i,j+1)   ) * (V->get(i,j)   - V->get(i+1,j)) -
+            abs( U->get(i-1,j) + U->get(i-1,j+1) ) * (V->get(i-1,j) - V->get(i,j)  )
+          );
+
+        // Computes G
+        G->set(i,j, V->get(i,j)+dt* ((1.0/p.Re)*(dx2v+dy2v) -dyv2-dxuv+p.gy) );
+
+      // Set boundary values for G
+      }else{
+        setObsGBoundaries(i,j,Obs->get(i,j),G,V);
+      }
+
     }
     G->set(i,0,      V->get(i,0));
     G->set(i,p.jmax, V->get(i,p.jmax));
