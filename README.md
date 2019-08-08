@@ -53,6 +53,7 @@ Inputs     | what it does
 *jmax*     |   number of cells in y
 *dt*       |   maximum desired time step
 *t_end*    |   simulation time
+*dt_out*   |   time difference between 2 consecutive simulation dumps
 *tau*      |   security factor (0<tau<=1) for the time step
 *itermax*  |   maximum number of iteration to get the pressure when using the SOR algo.
 *eps*      |   maximum residual in the SOR algo.
