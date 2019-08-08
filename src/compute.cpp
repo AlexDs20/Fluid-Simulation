@@ -13,7 +13,7 @@ using namespace std;
 //--------------------------------------------------
 // Write all output data to files
 //--------------------------------------------------
-void writeOutput(string file, matrix* U, matrix* V, matrix* P){
+void writeOutput(string file, matrix<real>* U, matrix<real>* V, matrix<real>* P){
   string file1 = file+"U";
   string file2 = file+"V";
   string file3 = file+"P";
@@ -61,7 +61,7 @@ real computeDT(Parameters p, real umax, real vmax){
 //--------------------------------------------------
 //  Compute gamma (eq 3.20 page 30)
 //--------------------------------------------------
-real computeGamma(matrix* U, matrix * V, real dx, real dy, real dt){
+real computeGamma(matrix<real>* U, matrix<real>* V, real dx, real dy, real dt){
   real minU = std::abs(U->min());
   real maxU = U->max();
   real maxAbsU = (minU < maxU)? maxU*dt/dx:minU*dt/dx;
@@ -77,7 +77,7 @@ real computeGamma(matrix* U, matrix * V, real dx, real dy, real dt){
 //--------------------------------------------------
 //  Compute F
 //--------------------------------------------------
-void computeF(Parameters p, real dt, matrix* U, matrix* V, matrix* F){
+void computeF(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<real>* F){
   real gamma = computeGamma(U,V,p.dx,p.dy,dt);
   real dx2u, dy2u, dxu2, dyuv;
   real idx = 1.0/p.dx;
@@ -120,7 +120,7 @@ void computeF(Parameters p, real dt, matrix* U, matrix* V, matrix* F){
 //--------------------------------------------------
 //  Compute G
 //--------------------------------------------------
-void computeG(Parameters p, real dt, matrix* U, matrix* V, matrix* G){
+void computeG(Parameters p, real dt, matrix<real>* U, matrix<real>* V, matrix<real>* G){
   real gamma = computeGamma(U,V,p.dx,p.dy,dt);
   real dx2v, dy2v, dyv2, dxuv;
   real idx = 1.0/p.dx;
@@ -163,7 +163,7 @@ void computeG(Parameters p, real dt, matrix* U, matrix* V, matrix* G){
 //--------------------------------------------------
 //  Compute RHS: 1/dt * ((Fij - Fi-1,j)/dx + (Gij-Gij-1)/dy)
 //--------------------------------------------------
-void computeRHS(Parameters p, real dt, matrix* F, matrix* G, matrix* RHS){
+void computeRHS(Parameters p, real dt, matrix<real>* F, matrix<real>* G, matrix<real>* RHS){
   real idx = 1.0/p.dx;
   real idy = 1.0/p.dy;
   real idt = 1.0/dt;
@@ -184,7 +184,7 @@ void computeRHS(Parameters p, real dt, matrix* F, matrix* G, matrix* RHS){
 // Use pt1 as input as the time step t and
 // as output for time step t+1
 //--------------------------------------------------
-void computeP(Parameters p, matrix* rhs, matrix* P){
+void computeP(Parameters p, matrix<real>* rhs, matrix<real>* P){
   real idx2 = 1.0/(p.dx*p.dx);
   real idy2 = 1.0/(p.dy*p.dy);
   real coeff = p.omega/( 2.0*(idx2+idy2) );
@@ -238,7 +238,7 @@ void computeP(Parameters p, matrix* rhs, matrix* P){
 //--------------------------------------------------
 //  Compute u, v at time step +1 (eq 3.34, 3.35, page 34)
 //--------------------------------------------------
-void computeNewVel(Parameters p, real delt, matrix* F, matrix* G, matrix* P, matrix* U, matrix* V){
+void computeNewVel(Parameters p, real delt, matrix<real>* F, matrix<real>* G, matrix<real>* P, matrix<real>* U, matrix<real>* V){
   real dtdx = delt/p.dx;
   real dtdy = delt/p.dy;
 

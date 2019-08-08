@@ -19,6 +19,6 @@ class Parameters{
 
     Parameters(string file);
     void setScale(real uMax, real vMax, real pMax);
-    void toDimensionless(matrix* U, matrix* V, matrix* P);
-    void toDimensional(matrix* U, matrix* V, matrix* P);
+    void toDimensionless(matrix<real>* U, matrix<real>* V, matrix<real>* P);
+    void toDimensional(matrix<real>* U, matrix<real>* V, matrix<real>* P);
 };

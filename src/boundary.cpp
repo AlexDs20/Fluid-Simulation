@@ -4,7 +4,7 @@ using namespace std;
 
 #include "boundary.h"
 
-void setBoundaries(Parameters p, matrix* U, matrix* V){
+void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
   real inflow = 10.0;
 
 // Problem in the corners:
@@ -111,7 +111,7 @@ void setBoundaries(Parameters p, matrix* U, matrix* V){
   }
 }
 
-void setSpecificBoundaries(Parameters p, matrix* U, matrix* V){
+void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
   if (true){
     real inflow = 10;
     for (int j=p.jmax/2-2;j<p.jmax/2+2;j++){

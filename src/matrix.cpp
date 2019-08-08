@@ -1,26 +1,67 @@
 #include <algorithm>
+#include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
-using namespace std;
 
 #include "matrix.h"
 
+using namespace std;
+
+//--------------------------------------------------
+//  Template implementation
+template matrix<int>::matrix (int,int);
+template matrix<real>::matrix(int,int);
+template matrix<int>::matrix (int,int,int);
+template matrix<real>::matrix(int,int,real);
+template matrix<int>::matrix (int,int,string);
+template matrix<real>::matrix(int,int,string);
+
+template int matrix<int>::get(int,int);
+template real matrix<real>::get(int,int);
+
+template vector<int> matrix<int>::getAll();
+template vector<real> matrix<real>::getAll();
+
+template void matrix<int>::set(int,int,int);
+template void matrix<real>::set(int,int,real);
+
+template int matrix<int>::max();
+template real matrix<real>::max();
+
+template int matrix<int>::min();
+template real matrix<real>::min();
+
+template int matrix<int>::amax();
+template real matrix<real>::amax();
+
+
 //--------------------------------------------------
 //  Constructors
-matrix::matrix(int w, int h, real inVal){
-  width = w;
-  height = h;
-  val.resize(w*h,inVal);
-}
-matrix::matrix(int w, int h){
+template <typename T>
+matrix<T>::matrix(int w, int h){
   width = w;
   height = h;
   val.resize(w*h);
 }
+template <typename T>
+matrix<T>::matrix(int w, int h, T inVal){
+  width = w;
+  height = h;
+  val.resize(w*h,inVal);
+}
+template <typename T>
+matrix<T>::matrix(int w, int h, string file){
+  width = w;
+  height = h;
+  val.resize(w*h);
+  assignValues(file);
+}
 
 //--------------------------------------------------
 //  Linear index of the (i,j)
-int matrix::idx(int i, int j){
+template <typename T>
+int matrix<T>::idx(int i, int j){
   if (i>width-1 || j>height-1){
     std::cout << "requested index out of bound!" << std::endl;
   }
@@ -29,33 +70,69 @@ int matrix::idx(int i, int j){
 
 //--------------------------------------------------
 //  Element i,j
-real matrix::get(int i, int j){
+template <typename T>
+T matrix<T>::get(int i, int j){
   return val[idx(i,j)];
 }
 
 //--------------------------------------------------
 //  Return all values
-vector<real> matrix::getAll(){
+template <typename T>
+vector<T> matrix<T>::getAll(){
   return val;
 }
 
 //--------------------------------------------------
 //  Set Specific value
-void matrix::set(int i, int j, real inVal){
+template <typename T>
+void matrix<T>::set(int i, int j, T inVal){
   val[idx(i,j)] = inVal;
 }
 
 //--------------------------------------------------
+// Assign values everywhere within the domain from the file
+template <typename T>
+void matrix<T>::assignValues(string file){
+  ifstream in;
+  int readVal;
+  int i = 1;
+  int j = 1;
+
+  in.open(file);
+  if (in.is_open()){
+    while (in >> readVal){
+      // Assign the value to the
+      val[idx(i,j)] = readVal;
+
+      // The indices: when reaching the end of the x line (at imax i.e. w-2),
+      // jump to the next y line
+      if (i==width-2){
+        i = 1;
+        j++;
+      }else{
+        i++;
+      }
+    }
+  in.close();
+  }else{
+    cout << "Did not manage to open the file to initialise the matrix!" << endl;
+  }
+}
+
+//--------------------------------------------------
 //  Maximum
-real matrix::max(){
+template <typename T>
+T matrix<T>::max(){
   return *std::max_element(std::begin(val),std::end(val));
 }
 //  Minimum
-real matrix::min(){
+template <typename T>
+T matrix<T>::min(){
   return *std::min_element(std::begin(val),std::end(val));
 }
 
 //  Maximum in absolute value
-real matrix::amax(){
-  return std::max(std::abs(matrix::max()),std::abs(matrix::min()));
+template <typename T>
+T matrix<T>::amax(){
+  return std::max(std::abs(matrix<T>::max()),std::abs(matrix<T>::min()));
 }

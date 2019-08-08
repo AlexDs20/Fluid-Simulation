@@ -9,7 +9,6 @@ using namespace std;
 
 Parameters::Parameters(string inputfile){
   ifstream in;
-  string line;
   string var, eqs;
   real val;
 
@@ -81,7 +80,7 @@ void Parameters::setScale(real uMax, real vMax, real pMax){
   std::cout << "The Reynold number is: " << Re << std::endl;
 }
 
-void Parameters::toDimensionless(matrix* U, matrix* V, matrix* P){
+void Parameters::toDimensionless(matrix<real>* U, matrix<real>* V, matrix<real>* P){
   xlength = xlength/L;
   ylength = ylength/L;
   t_end = uInf*t_end/L;
@@ -95,7 +94,7 @@ void Parameters::toDimensionless(matrix* U, matrix* V, matrix* P){
   }
 }
 
-void Parameters::toDimensional(matrix* U, matrix* V, matrix* P){
+void Parameters::toDimensional(matrix<real>* U, matrix<real>* V, matrix<real>* P){
   xlength = xlength*L;
   ylength = ylength*L;
   t_end = t_end*L/uInf;

@@ -1,4 +1,4 @@
-#define real      float
+#define real float
 
 /*
   Values for the boundaries inside the domain.

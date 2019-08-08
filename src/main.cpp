@@ -5,15 +5,17 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
-#include "definitions.h"
 #include "boundary.h"
 #include "compute.h"
+#include "definitions.h"
 #include "matrix.h"
 #include "parameters.h"
 
+using namespace std;
+
+
 int main(int , char *argv[]){
+
 //-------------------------
 // MPI STUFF
 MPI_Init(NULL, NULL);
@@ -23,25 +25,24 @@ int pid;
 MPI_Comm_rank(MPI_COMM_WORLD, &pid);
 
 //-------------------------
-// Internal variables
+// Input variables
 string inputfile  = argv[1];
 string outputfile = argv[2];
-
-//-------------------------
+string obsfile    = argv[3];
 // Parameters
 Parameters p(inputfile);
 real delt;
 real t = 0;
-
-//-------------------------
 // Set initial UVP arrays
-matrix U(p.imax+2,p.jmax+2,p.UI);
-matrix V(p.imax+2,p.jmax+2,p.VI);
-matrix P(p.imax+2,p.jmax+2,p.PI);
-
-matrix F((p.imax+2),(p.jmax+2));
-matrix G((p.imax+2),(p.jmax+2));
-matrix RHS((p.imax+2),(p.jmax+2));
+matrix<real> U(p.imax+2,p.jmax+2,p.UI);
+matrix<real> V(p.imax+2,p.jmax+2,p.VI);
+matrix<real> P(p.imax+2,p.jmax+2,p.PI);
+// Set F,G,RHS
+matrix<real> F((p.imax+2),(p.jmax+2));
+matrix<real> G((p.imax+2),(p.jmax+2));
+matrix<real> RHS((p.imax+2),(p.jmax+2));
+// Create the inner boundaries
+matrix<real> obs(p.imax+2,p.jmax+2,obsfile);
 
 //-------------------------
 //  Set scale parameters
@@ -54,17 +55,10 @@ matrix RHS((p.imax+2),(p.jmax+2));
 //  variables
 // p.toDimensionless(&U, &V, &P);
 
-//-------------------------
-// Create a boundary matrix
-/*
-To be done: Create a matrix that would contain values indicating whether it is a boundary or not.
-The boundary values for the field should then be changed accordingly to the boudaries
-*/
-
 while (t<p.t_end){
   //-------------------------
   // Calculate time step
-  std::cout << t*100.0/p.t_end << "%" << std::endl;
+  // std::cout << t*100.0/p.t_end << "%" << std::endl;
   delt = computeDT(p,U.amax(),V.amax());
 
   //-------------------------
@@ -94,6 +88,7 @@ while (t<p.t_end){
   //-------------------------
   // Write output
   writeOutput(outputfile,&U,&V,&P);
+
 
   t += delt;
 }

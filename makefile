@@ -11,6 +11,7 @@ SRC       := $(wildcard src/*.cpp)
 OBJECTS   := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 INPUTFILE := ./IO/input
 OUTPUTFILE:= ./IO/output
+OBSFILE 	:= ./IO/obstacle
 
 # Run
 CRUN = mpirun
@@ -51,4 +52,4 @@ clean:
 		-@rm -rvf $(OUTPUTFILE)*
 
 run:
-	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE)
+	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE) $(OBSFILE)

@@ -25,17 +25,18 @@ Windows or Mac.
 * mpich package (openMPI, g++) for compiling and running (even though parallel computation is not implemented yet).
 I use version 3.3.1-1 of mpich found on the AUR.
 
-* python to visualise the output. I use python 3.7
+* The libraries numpy, matplotlib and pandas in python to visualise the output. I use python 3.7
 
 ## A typical run
 
-A typical run would consist of 3 steps:
+A typical run would consist of 3:
 1) Set the inputs for the desired simulation
 2) Run the simulation
 3) Look at the outputs
 
-### The input file
-The inputs for the simulation are given in IO/input:
+### The inputs
+
+The input file is located at IO/input:
 
 Inputs     | what it does
 -----------|--------------
@@ -63,8 +64,6 @@ Inputs     | what it does
 *wS*       |   boundary condition on the bottom of the box (y=0)
 
 
-
-
 The values of *rho* and *dynvis* are not currently used.
 I hesitated between requesting physical inputs values or dimensionless inputs.
 
@@ -80,12 +79,20 @@ A value of:
 * 5: indicates periodic boundaries. For this one to work, the pair wW and wE or the pair wS and wN should be given the value 5.
 
 
+If you would like more specific boundary conditions, such as a narrow inflow,
+this needs to be implemented in the setSpecBoundaries function in the
+boundary.cpp file.
+Doing this will require recompiling the code.
+
 ### To run
 
-Simply enter the followings in the terminal:
+If you edited the code, run:
 ```
-make clean
 make
+```
+
+You can now run the code:
+```
 make run
 ```
 
