@@ -85,23 +85,23 @@ for i,line in enumerate(Ulines):
         ax[1,0].set_xlim(left=Xpc[0,0],right=Xpc[0,-1])
         ax[1,0].set_ylim(bottom=Ypc[0,0],top=Ypc[-1,0])
 
-        imP = ax[0,1].imshow(PdataResh, vmin=np.amin(Pdata), vmax=np.amax(Pdata), aspect='equal', origin='lower', extent= (Xpc[0,0], Xpc[0,-1]+dx, Ypc[0][0], Ypc[-1,0]+dy))
+        imP = ax[0,1].imshow(PdataResh-np.median(PdataResh), vmin=np.amin(Pdata), vmax=np.amax(Pdata), aspect='equal', origin='lower', extent= (Xpc[0,0], Xpc[0,-1]+dx, Ypc[0][0], Ypc[-1,0]+dy))
         cb = fig.colorbar(imP,ax=ax[0,1])
-        ax[0,1].title.set_text('P')
+        ax[0,1].title.set_text('$\delta$P')
         ax[0,1].set_xlim(left=Xpc[0,0],right=Xpc[0,-1])
         ax[0,1].set_ylim(bottom=Ypc[0,0],top=Ypc[-1,0])
 
     else:
         imU.set_data(UdataResh)
-        imU.set_clim(vmin=np.amin(Udata),vmax=np.amax(Udata))
+        imU.set_clim(vmin=-1,vmax=1)#np.amin(Udata),vmax=np.amax(Udata))
 
         imV.set_data(VdataResh)
-        imV.set_clim(vmin=np.amin(Vdata),vmax=np.amax(Vdata))
+        imV.set_clim(vmin=-1,vmax=1)#np.amin(Vdata),vmax=np.amax(Vdata))
 
-        imP.set_data(PdataResh)
-        imP.set_clim(vmin=np.amin(Pdata),vmax=np.amax(Pdata))
+        imP.set_data(PdataResh-np.median(PdataResh))
+        imP.set_clim(vmin=-5,vmax=5)#np.amin(Pdata),vmax=np.amax(Pdata))
 
-    plt.pause(0.001)
+    plt.pause(0.05)
 
 plt.show()
 

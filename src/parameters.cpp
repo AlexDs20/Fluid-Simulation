@@ -27,6 +27,8 @@ Parameters::Parameters(string inputfile){
         dt = val;}
       else if ( var.compare("t_end") == 0 ){
         t_end = val;}
+      else if ( var.compare("dt_out") == 0 ){
+        dt_out = val;}
       else if ( var.compare("tau") == 0 ){
         tau = val;}
       else if ( var.compare("itermax") == 0 ){

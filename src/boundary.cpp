@@ -111,13 +111,13 @@ void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
 }
 
 void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
-  if (false){
+  if (true){
     for (int j=p.jmax/2-2;j<p.jmax/2+2;j++){
       U->set(0,j,         std::abs(p.inflow));
       V->set(0,j,        -V->get(1,j));
     }
   }
-  if (true){
+  if (false){
     for (int i=1;i<=p.imax;i++){
       V->set(i,0, 0);
       V->set(i,p.jmax,0);

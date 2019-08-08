@@ -12,7 +12,7 @@ class Parameters{
   private:
     real rhoInf, L, uInf, pInf;
   public:
-    real xlength, ylength, dx, dy, dt, t_end, tau, eps, omega;
+    real xlength, ylength, dx, dy, dt, t_end, dt_out, tau, eps, omega;
     real Re, gx, gy, UI,VI,PI,rho,vis,inflow;
     int wW, wE, wN, wS;
     int imax, jmax, itermax;

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <mpi.h>
 #include <string>
+#include <stdio.h>  // to remove files
 #include <vector>
 
 #include "boundary.h"
@@ -34,6 +35,7 @@ string obsfile    = argv[3];
 Parameters p(inputfile);
 real delt;
 real t = 0;
+real t_print = 0;
 // Set initial UVP arrays
 matrix<real> U(p.imax+2,p.jmax+2,p.UI);
 matrix<real> V(p.imax+2,p.jmax+2,p.VI);
@@ -44,6 +46,11 @@ matrix<real> G((p.imax+2),(p.jmax+2));
 matrix<real> RHS((p.imax+2),(p.jmax+2));
 // Create the obstacles
 obstacle Obs(p.imax+2,p.jmax+2,obsfile);
+
+// Delete the existing output files
+remove((outputfile+'U').c_str());
+remove((outputfile+'V').c_str());
+remove((outputfile+'P').c_str());
 
 //-------------------------
 //  Set scale parameters
@@ -57,9 +64,13 @@ obstacle Obs(p.imax+2,p.jmax+2,obsfile);
 // p.toDimensionless(&U, &V, &P);
 
 while (t<p.t_end){
+  // Show runtime
+  std::cout.flush();
+  std::cout << "   " << t*100.0/p.t_end << "  %  \r";
+  std::cout.flush();
+
   //-------------------------
   // Calculate time step
-  std::cout << t*100.0/p.t_end << "%" << std::endl;
   delt = computeDT(p,U.amax(),V.amax());
 
   //-------------------------
@@ -67,7 +78,6 @@ while (t<p.t_end){
   setBoundaries(p,&U,&V);
   setSpecificBoundaries(p,&U,&V);
   setObsVelBoundaries(&Obs,&U,&V);
-
 
   //-------------------------
   //  Compute F and G
@@ -89,8 +99,11 @@ while (t<p.t_end){
 
   //-------------------------
   // Write output
-  writeOutput(outputfile,&U,&V,&P);
-
+  t_print += delt;
+  if (t_print>= p.dt_out){
+    writeOutput(outputfile,&U,&V,&P);
+    t_print = 0;
+  }
 
   t += delt;
 }
