@@ -51,6 +51,8 @@ Parameters::Parameters(string inputfile){
         rho = val;}
       else if ( var.compare("dynvis") == 0 ){
         vis = val;}
+      else if ( var.compare("inflow") == 0 ){
+        inflow = val;}
       else if ( var.compare("wW") == 0 ){
         wW = val;}
       else if ( var.compare("wE") == 0 ){
@@ -85,6 +87,7 @@ void Parameters::toDimensionless(matrix<real>* U, matrix<real>* V, matrix<real>*
   ylength = ylength/L;
   t_end = uInf*t_end/L;
   dt = uInf*dt/L;
+  inflow = inflow/uInf;
   for (int i = 0; i<imax+2; ++i){
     for (int j = 1; j<jmax+2; j++){
       U->set(i,j,U->get(i,j)/uInf);
@@ -99,6 +102,7 @@ void Parameters::toDimensional(matrix<real>* U, matrix<real>* V, matrix<real>* P
   ylength = ylength*L;
   t_end = t_end*L/uInf;
   dt = dt*L/uInf;
+  inflow = inflow*uInf;
   for (int i = 0; i<imax+2; ++i){
     for (int j = 1; j<jmax+2; j++){
       U->set(i,j,U->get(i,j)*uInf);

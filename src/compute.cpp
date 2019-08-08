@@ -90,7 +90,7 @@ void computeF(Parameters p, real dt, obstacle* Obs, matrix<real>* U, matrix<real
   for (int j=1; j<=p.jmax; j++){
     for (int i=1; i<=p.imax-1; i++){
 
-      // Check if fluid value, if so calculate the velocity stuff
+      // Check if fluid cell
       if (Obs->get(i,j)==FC){
 
         // Computes d^2u/dx^2
@@ -142,7 +142,7 @@ void computeG(Parameters p, real dt, obstacle* Obs, matrix<real>* U, matrix<real
   for (int i=1; i<=p.imax; i++){
     for (int j=1; j<=p.jmax-1; j++){
 
-      // Check if fluid value, if so calculate the velocity stuff
+      // Check if fluid fluid cell
       if (Obs->get(i,j)==FC){
 
         // Computes d^2v/dx^2
@@ -184,34 +184,42 @@ void computeG(Parameters p, real dt, obstacle* Obs, matrix<real>* U, matrix<real
 //--------------------------------------------------
 //  Compute RHS: 1/dt * ((Fij - Fi-1,j)/dx + (Gij-Gij-1)/dy)
 //--------------------------------------------------
-void computeRHS(Parameters p, real dt, matrix<real>* F, matrix<real>* G, matrix<real>* RHS){
+void computeRHS(Parameters p, real dt, obstacle* Obs, matrix<real>* F, matrix<real>* G, matrix<real>* RHS){
   real idx = 1.0/p.dx;
   real idy = 1.0/p.dy;
   real idt = 1.0/dt;
 
   for (int i=1; i<=p.imax; i++){
     for (int j=1; j<=p.jmax; j++){
-      RHS->set(i,j, idt*( (F->get(i,j)-F->get(i-1,j)) *idx +
-                          (G->get(i,j)-G->get(i,j-1)) *idy
-                        )
-              );
+
+      // Calculate only if fluid cell
+      if (Obs->get(i,j)==FC){
+        RHS->set(i,j, idt*( (F->get(i,j)-F->get(i-1,j)) *idx +
+                            (G->get(i,j)-G->get(i,j-1)) *idy
+                          )
+                );
+      }
+
     }
   }
+
 }
 //--------------------------------------------------
 
 //--------------------------------------------------
 //  Compute pressure at time step +1
-// Use pt1 as input as the time step t and
-// as output for time step t+1
+//  Use P as input at the time step t and
+//  as output for time step t+1
 //--------------------------------------------------
-void computeP(Parameters p, matrix<real>* rhs, matrix<real>* P){
+void computeP(Parameters p, obstacle* Obs, matrix<real>* rhs, matrix<real>* P){
   real idx2 = 1.0/(p.dx*p.dx);
   real idy2 = 1.0/(p.dy*p.dy);
   real coeff = p.omega/( 2.0*(idx2+idy2) );
 
   int it = 1;
   real res;
+
+  int numcell=0;
 
   do{
     res = 0.0;
@@ -228,28 +236,34 @@ void computeP(Parameters p, matrix<real>* rhs, matrix<real>* P){
       P->set(0,j,        P->get(1,j));
       P->set(p.imax+1,j, P->get(p.imax,j));
     }
+    setObsPBoundaries(Obs,P);
 
     // Compute inside the domain
     for (int i=1; i<=p.imax; i++){
       for (int j=1; j<=p.jmax; j++){
-        P->set(i,j,
-                (1.0-p.omega)*P->get(i,j) +
-                coeff*( (P->get(i+1,j) + P->get(i-1,j)) * idx2 +
-                        (P->get(i,j+1) + P->get(i,j-1)) * idy2 -
-                        rhs->get(i,j) )
-              );
+        if (Obs->get(i,j)==FC){
+          P->set(i,j,
+                  (1.0-p.omega)*P->get(i,j) +
+                  coeff*( (P->get(i+1,j) + P->get(i-1,j)) * idx2 +
+                          (P->get(i,j+1) + P->get(i,j-1)) * idy2 -
+                          rhs->get(i,j) )
+                );
+          numcell++;
+        }
       }
     }
     // Residual using L2 norm:
     for (int i=1; i<=p.imax; i++){
       for (int j=1; j<=p.jmax; j++){
-        res = res +pow( ( P->get(i+1,j) - 2.0*P->get(i,j) + P->get(i-1,j) )*idx2
-                       +( P->get(i,j+1) - 2.0*P->get(i,j) + P->get(i,j-1) )*idy2
-                       -rhs->get(i,j)
-                      ,2);
+        if (Obs->get(i,j)==FC){
+          res = res +pow( ( P->get(i+1,j) - 2.0*P->get(i,j) + P->get(i-1,j) )*idx2
+                         +( P->get(i,j+1) - 2.0*P->get(i,j) + P->get(i,j-1) )*idy2
+                         -rhs->get(i,j)
+                        ,2);
+        }
       }
     }
-    res = sqrt( res/(p.imax*p.jmax) );
+    res = sqrt( res/numcell );
 
     it++;
   }while ( it<=p.itermax && res > p.eps);
@@ -265,7 +279,7 @@ void computeNewVel(Parameters p, real delt, matrix<real>* F, matrix<real>* G, ma
 
   for (int i=1 ; i<=p.imax-1; i++){
     for (int j=1; j<=p.jmax; j++){
-      U->set(i,j, F->get(i,j) - dtdx*(P->get(i+1,j)-P->get(i,j)));
+        U->set(i,j, F->get(i,j) - dtdx*(P->get(i+1,j)-P->get(i,j)));
     }
   }
   for (int i=1 ; i<=p.imax; i++){

@@ -76,12 +76,12 @@ while (t<p.t_end){
 
   //-------------------------
   //  Compute RHS
-  computeRHS(p,delt,&F,&G,&RHS);
+  computeRHS(p,delt,&Obs,&F,&G,&RHS);
 
   //-------------------------
   //  Push Pressure to
   //  the next time step
-  computeP(p,&RHS,&P);
+  computeP(p,&Obs,&RHS,&P);
 
   //-------------------------
   //  Compute new velocities

@@ -58,6 +58,7 @@ Inputs     | what it does
 *PI*       |   Initial pressure (given in the whole domain)
 *rho*      |   density
 *dynvis*   |   dynamical viscosity
+*inflow*   |   speed of the inflow in case of inflow boundary condition
 *wW*       |   boundary condition on the left of the box (x=0)
 *wE*       |   boundary condition on the right of the box (x=xlength)
 *wN*       |   boundary condition on the top of the box (y=ylength)
