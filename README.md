@@ -93,7 +93,7 @@ time-dependent inflow, this needs to be implemented in the setSpecBoundaries fun
 boundary.cpp file.
 Doing this will require recompiling the code.
 
-##### 1.3. Obstacles
+#### 1.3. Obstacles
 
 If you would like to include obstacles in the domain, you need to provide a
 *IO/obstacle* file that will be read when running the simulation.
