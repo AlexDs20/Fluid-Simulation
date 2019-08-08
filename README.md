@@ -8,11 +8,11 @@ This simulation is implemented in C++ and follows the description given in Numer
 - [x] 5 different boundary conditions at the edges of the grid: no-slip, free-slip,
 - [x] outflow, inflow, periodic boundaries
 - [x] A python script to visualise the output
+- [x] Obstacles inside the domain
 
 ### What is *not* implemented
 
 - [ ] Interpolation of the output data to make a correct quiver plot
-- [ ] Obstacles inside the domain
 - [ ] Obstacles moving due to the flow
 - [ ] 3D simulation
 - [ ] Parallelized computation
@@ -58,6 +58,7 @@ Inputs     | what it does
 *PI*       |   Initial pressure (given in the whole domain)
 *rho*      |   density
 *dynvis*   |   dynamical viscosity
+*inflow*   |   speed of the inflow in case of inflow boundary condition
 *wW*       |   boundary condition on the left of the box (x=0)
 *wE*       |   boundary condition on the right of the box (x=xlength)
 *wN*       |   boundary condition on the top of the box (y=ylength)

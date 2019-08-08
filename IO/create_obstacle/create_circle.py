@@ -57,21 +57,21 @@ for yi, yv in enumerate(y):
     for xi, xv in enumerate(x):
         if (Obs[yi,xi] == 10):
             if   ( Obs[yi+1,xi  ]==0 and  Obs[yi,xi-1]==0 ):   # NW boundary
-                Obs[yi,xi] = 15
+                Obs[yi,xi] = 55
             elif ( Obs[yi+1,xi  ]==0 and  Obs[yi,xi+1]==0 ):   # NE boundary
-                Obs[yi,xi] = 16
+                Obs[yi,xi] = 56
             elif ( Obs[yi-1,xi  ]==0 and  Obs[yi,xi-1]==0 ):   # SW boundary
-                Obs[yi,xi] = 17
+                Obs[yi,xi] = 57
             elif ( Obs[yi-1,xi  ]==0 and  Obs[yi,xi+1]==0 ):   # SE boundary
-                Obs[yi,xi] = 18
+                Obs[yi,xi] = 58
             elif ( Obs[yi+1,xi  ]==0 ):   # N boundary
-                Obs[yi,xi] = 11
+                Obs[yi,xi] = 51
             elif ( Obs[yi-1,xi  ]==0 ):   # S boundary
-                Obs[yi,xi] = 12
+                Obs[yi,xi] = 52
             elif ( Obs[yi  ,xi-1]==0 ):   # W boundary
-                Obs[yi,xi] = 13
+                Obs[yi,xi] = 53
             elif ( Obs[yi  ,xi+1]==0 ):   # E boundary
-                Obs[yi,xi] = 14
+                Obs[yi,xi] = 54
 
 # Obs(y_index,x_index)        Center
 # Obs(y_index-1,x_index)      South
