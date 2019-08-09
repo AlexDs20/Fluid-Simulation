@@ -1,5 +1,5 @@
 # Compile
-CXX       := mpic++
+CXX       := g++ #mpic++
 CXXFLAGS  := -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS   := -L/usr/lib -lstdc++ -lm
 BUILD     := ./build
@@ -11,7 +11,7 @@ SRC       := $(wildcard src/*.cpp)
 OBJECTS   := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 INPUTFILE := ./IO/input
 OUTPUTFILE:= ./IO/output
-OBSFILE 	:= ./IO/obstacle
+OBSFILE   := ./IO/obstacle
 
 # Run
 CRUN = mpirun
@@ -51,4 +51,5 @@ clean:
 		-@rm -rvf $(EXE_DIR)/*
 
 run:
-	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE) $(OBSFILE)
+	$(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE) $(OBSFILE)
+#	$(CRUN) $(CRFLAGS) -v $(EXE_DIR)/$(TARGET) $(INPUTFILE) $(OUTPUTFILE) $(OBSFILE)

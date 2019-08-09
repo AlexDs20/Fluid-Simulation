@@ -2,6 +2,9 @@
 
 This simulation is implemented in C++ and follows the description given in Numerical simulation in Fluid Dynamics A Practical Introduction by M. Griebel, T. Dornseifer and T. Neunhoeffer.
 
+Example:
+![](snapshots/quiver.gif)
+
 ### What is implemented
 - [x] 2D simulation in a rectangular grid
 - [x] Incompressible fluid
@@ -19,7 +22,6 @@ This simulation is implemented in C++ and follows the description given in Numer
 
 - [ ] F and G could be calculated together (so that we have less loops). And
   then the boundary values for them could be put into one function too.
-- [ ] Interpolation of the output data to make a correct quiver plot
 - [ ] Verify the different boundary conditions
 
 ### What is required
@@ -27,7 +29,7 @@ This simulation is implemented in C++ and follows the description given in Numer
 All of this was developed on a linux machine and may not work directly on
 Windows or Mac.
 
-* mpich package (openMPI, g++) for compiling and running (even though parallel computation is not implemented yet).
+* mpich package (openMPI, gcc) for compiling and running (even though parallel computation is not implemented yet).
 I use version 3.3.1-1 of mpich found on the AUR.
 
 * The libraries numpy, matplotlib and pandas in python to visualise the output. I use python 3.7
@@ -128,6 +130,6 @@ Go the the plot directory and run:
 ```
 ./fluid_plot.py
 ```
+Going into the file (towards the end), you can comment/uncomment the desired plots:
+time_evolution_imshow or time_evolution_quiver.
 
-Note that the output of the simulation of the velocities are at the border of the cells,
-to make a quiver plot starting from the center of the cells, the values of the velocity fields must be evaluated there first.

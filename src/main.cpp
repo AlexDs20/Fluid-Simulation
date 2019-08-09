@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <mpi.h>
+//#include <mpi.h>
 #include <string>
 #include <stdio.h>  // to remove files
 #include <vector>
@@ -20,11 +20,11 @@ int main(int , char *argv[]){
 
 //-------------------------
 // MPI STUFF
-MPI_Init(NULL, NULL);
-int nproc;
-MPI_Comm_size(MPI_COMM_WORLD, &nproc);
-int pid;
-MPI_Comm_rank(MPI_COMM_WORLD, &pid);
+//MPI_Init(NULL, NULL);
+//int nproc;
+//MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+//int pid;
+//MPI_Comm_rank(MPI_COMM_WORLD, &pid);
 
 //-------------------------
 // Input variables
@@ -51,6 +51,12 @@ obstacle Obs(p.imax+2,p.jmax+2,obsfile);
 remove((outputfile+'U').c_str());
 remove((outputfile+'V').c_str());
 remove((outputfile+'P').c_str());
+// and open files to write
+ofstream Ufile, Vfile, Pfile;
+Ufile.open(outputfile+'U', ios::out | ios::app);
+Vfile.open(outputfile+'V', ios::out | ios::app);
+Pfile.open(outputfile+'P', ios::out | ios::app);
+
 
 //-------------------------
 //  Set scale parameters
@@ -62,6 +68,7 @@ remove((outputfile+'P').c_str());
 //  Go to dimensionless
 //  variables
 // p.toDimensionless(&U, &V, &P);
+
 
 while (t<p.t_end){
   // Show runtime
@@ -101,19 +108,25 @@ while (t<p.t_end){
   // Write output
   t_print += delt;
   if (t_print>= p.dt_out){
-    writeOutput(outputfile,&U,&V,&P);
+    writeData(Ufile,U.getAll());
+    writeData(Vfile,V.getAll());
+    writeData(Pfile,P.getAll());
     t_print = 0;
   }
 
   t += delt;
 }
 
+Ufile.close();
+Vfile.close();
+Pfile.close();
+
 // Split work between processors
-if (pid == 1){
-
-}
-
+//if (pid == 1){
+//
+//}
+//
 // Finalize the MPI environment.
-MPI_Finalize();
+//MPI_Finalize();
 return 0;
 }

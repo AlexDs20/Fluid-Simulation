@@ -1,4 +1,6 @@
 #pragma once
+#include <fstream>
+#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -10,8 +12,7 @@ using namespace std;
 // Compute the time step
 real computeDT(Parameters p, real umax, real vmax);
 // write vector data to a file
-void writeData(string file, std::vector<real> v);
-void writeOutput(string file, matrix<real>* U, matrix<real>* V, matrix<real>* P);
+void writeData(std::ofstream& file, std::vector<real> v);
 // Compute the gamma factor needed in F and G
 real computeGamma(matrix<real>* U, matrix<real>* V, real dx, real dy, real dt);
 // Compute F and G which depends on u,v, their derivatives

@@ -13,33 +13,16 @@
 using namespace std;
 
 //--------------------------------------------------
-// Write all output data to files
-//--------------------------------------------------
-void writeOutput(string file, matrix<real>* U, matrix<real>* V, matrix<real>* P){
-  string file1 = file+"U";
-  string file2 = file+"V";
-  string file3 = file+"P";
-
-  writeData(file1,U->getAll());
-  writeData(file2,V->getAll());
-  writeData(file3,P->getAll());
-}
-//--------------------------------------------------
-
-//--------------------------------------------------
 // Write data to file
 //--------------------------------------------------
-void writeData(string file, std::vector<real> v){
-  ofstream myfile;
-  myfile.open(file, ios::out | ios::app);
-
-  if (myfile.is_open()){
+void writeData(std::ofstream& file, std::vector<real> v){
+  if (file.is_open()){
     for (auto i = v.begin(); i!=v.end(); i++){
-      myfile << *i << " ";
+      file << *i << " ";
     }
-    myfile << "\n";
+    file << "\n";
   }else{
-    cout << "Did not manage to open the output file!" << endl;
+    cout << "The file is not open!" << endl;
   }
 }
 //--------------------------------------------------

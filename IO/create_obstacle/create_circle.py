@@ -33,13 +33,14 @@ Y = Y + dy/2
 Obs = np.zeros(X.shape)
 
 # For this example, we put an circle of radius 0.1 in the middle y and a quarter of the way along x
-y0 = (y[0]+y[-1])*0.5
-x0 = (x[0]+x[-1])*0.25
-r = 0.1
+y0 = (y[0]+y[-1])*0.9
+x0 = (x[0]+x[-1])*0.5
+r = 0.05
 
 circle = np.sqrt((X - x0) ** 2 + (Y - y0) ** 2)
 circle = circle < r
 
+# Optimally, we should read the definitions.h file here instead of hard coding the values
 # Set the default obstacle value
 Obs[circle] = 10
 
@@ -52,7 +53,6 @@ for yi, yv in enumerate(y):
 
 # Go throught the whole grid and assigne the more precise boundary values
 # In principle going through the obstacles is enough but well...
-# Optimally, we should read the definitions.h file here instead of hard coding the values
 for yi, yv in enumerate(y):
     for xi, xv in enumerate(x):
         if (Obs[yi,xi] == 10):
@@ -72,16 +72,6 @@ for yi, yv in enumerate(y):
                 Obs[yi,xi] = 53
             elif ( Obs[yi  ,xi+1]==0 ):   # E boundary
                 Obs[yi,xi] = 54
-
-# Obs(y_index,x_index)        Center
-# Obs(y_index-1,x_index)      South
-# Obs(y_index+1,x_index)      North
-# Obs(y_index,x_index-1)      West
-# Obs(y_index,x_index+1)      East
-# Obs(y_index-1,x_index-1)    South West
-# Obs(y_index-1,x_index+1)    South Est
-# Obs(y_index+1,x_index-1)    North West
-# Obs(y_index+1,x_index+1)    North East
 
 # Write the output file
 file = open(outputfile,'w')
