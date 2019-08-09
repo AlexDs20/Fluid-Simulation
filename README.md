@@ -2,7 +2,7 @@
 
 This simulation is implemented in C++ and follows the description given in Numerical simulation in Fluid Dynamics A Practical Introduction by M. Griebel, T. Dornseifer and T. Neunhoeffer.
 
-Example:
+Example of a top lid moving to the right and driving the flow with it. In addition, there is a circle as an obstacle:
 ![](snapshots/quiver.gif)
 
 ### What is implemented
