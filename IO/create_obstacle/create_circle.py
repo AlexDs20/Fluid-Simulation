@@ -34,7 +34,7 @@ Obs = np.zeros(X.shape)
 
 # For this example, we put an circle of radius 0.1 in the middle y and a quarter of the way along x
 y0 = (y[0]+y[-1])*0.9
-x0 = (x[0]+x[-1])*0.5
+x0 = (x[0]+x[-1])*0.9
 r = 0.05
 
 circle = np.sqrt((X - x0) ** 2 + (Y - y0) ** 2)

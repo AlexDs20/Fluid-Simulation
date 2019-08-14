@@ -369,6 +369,69 @@ void setObsGBoundaries(int i, int j, int bType, matrix<real>* G, matrix<real>* V
   }
 }
 
+// FG inner boundaries
+void setObsFGBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* G, matrix<real>* U, matrix<real>* V){
+  switch(bType){
+    // Free-slip
+    case B_FS_N:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_S:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_FS_W:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_FS_E:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_FS_NW:
+      F->set(i-1,j,   U->get(i-1,j));
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_NE:
+      F->set(i,j,     U->get(i,j));
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_FS_SW:
+      F->set(i-1,j,   U->get(i-1,j));
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_FS_SE:
+      F->set(i,j,     U->get(i,j));
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    // No-slip
+    case B_NS_N:
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_S:
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_NS_W:
+      F->set(i-1,j,   U->get(i-1,j));
+      break;
+    case B_NS_E:
+      F->set(i,j,     U->get(i,j));
+      break;
+    case B_NS_NW:
+      F->set(i-1,j,   U->get(i-1,j));
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_NE:
+      F->set(i,j,     U->get(i,j));
+      G->set(i,j,     V->get(i,j));
+      break;
+    case B_NS_SW:
+      F->set(i-1,j,   U->get(i-1,j));
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+    case B_NS_SE:
+      F->set(i,j,     U->get(i,j));
+      G->set(i,j-1,   V->get(i,j-1));
+      break;
+  }
+}
 
 void setObsPBoundaries(obstacle* Obs, matrix<real>* P){
   int i,j;

@@ -75,7 +75,7 @@ void obstacle::toIJ(int k, int* i, int* j){
 
 //--------------------------------------------------
 //  Get the (i,j) pair for the element idxB with Boundary B_FLAG
-void obstacle::getIJ(int B_FLAG, int idxB, int*i ,int* j){
+void obstacle::getIJ(int B_FLAG, int idxB, int* i ,int* j){
     switch (B_FLAG){
       case B_FS_N:
         toIJ(FS_N[idxB],i,j);

@@ -88,8 +88,7 @@ while (t<p.t_end){
 
   //-------------------------
   //  Compute F and G
-  computeF(p,delt,&Obs,&U,&V,&F);
-  computeG(p,delt,&Obs,&U,&V,&G);
+  computeFG(p,delt,&Obs,&U,&V,&F,&G);
 
   //-------------------------
   //  Compute RHS

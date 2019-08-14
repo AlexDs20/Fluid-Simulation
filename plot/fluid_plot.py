@@ -149,15 +149,15 @@ dy = ylength/jmax
 
 (Xq,Yq) = pcolor_mesh_to_quiver(Xpc,Ypc,dx,dy)
 
-# U Defined on the middle of the right edge of each cells
-XU = Xpc[:-1,:-1] + dx
-YU = Ypc[:-1,:-1] + dy/2
-# V Defined on the middle of the top edge of each cells
-XV = Xpc[:-1,:-1] + dx/2
-YV = Ypc[:-1,:-1] + dy
-# V Defined in the middle of each cells
-XP = Xpc[:-1,:-1] + dx/2
-YP = Ypc[:-1,:-1] + dy/2
+# # U Defined on the middle of the right edge of each cells
+# XU = Xpc[:-1,:-1] + dx
+# YU = Ypc[:-1,:-1] + dy/2
+# # V Defined on the middle of the top edge of each cells
+# XV = Xpc[:-1,:-1] + dx/2
+# YV = Ypc[:-1,:-1] + dy
+# # V Defined in the middle of each cells
+# XP = Xpc[:-1,:-1] + dx/2
+# YP = Ypc[:-1,:-1] + dy/2
 
 Udata = read_output_lines(outputfile+'U',imax+2,jmax+2)
 Vdata = read_output_lines(outputfile+'V',imax+2,jmax+2)
@@ -166,8 +166,8 @@ Pdata = read_output_lines(outputfile+'P',imax+2,jmax+2)
 Ucenter = interpolate_data(Udata)
 Vcenter = interpolate_data(Vdata)
 
-#time_evolution_imshow(Xpc,Ypc,Udata,Vdata,Pdata)
-time_evolution_quiver(Xq,Yq,Ucenter,Vcenter)
+time_evolution_imshow(Xpc,Ypc,Udata,Vdata,Pdata)
+#time_evolution_quiver(Xq,Yq,Ucenter,Vcenter)
 
 #   #------------------------------
 #   #   Make gif
