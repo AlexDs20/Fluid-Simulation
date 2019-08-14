@@ -110,8 +110,8 @@ def time_evolution_quiver(X,Y,U,V):
     Vdata = np.zeros(newshape)
     Vdata[:,:-1,:-1] = V
     UN = np.sqrt( Udata**2 + Vdata**2 )
-#    Udata = np.divide(Udata,UN)
-#    Vdata = np.divide(Vdata,UN)
+    Udata = np.divide(Udata,UN)
+    Vdata = np.divide(Vdata,UN)
 
     fig, ax = plt.subplots(1,1)
     for i in range(newshape[0]):
@@ -119,7 +119,8 @@ def time_evolution_quiver(X,Y,U,V):
             q = ax.quiver(X[::res,::res],Y[::res,::res],Udata[i,::res,::res], Vdata[i,::res,::res], UN[i,::res,::res])
             cb = fig.colorbar(q,ax=ax)
             ax.title.set_text('Velocity field')
-            ax.set_xlim(left=X[0,0],right=X[0,-1])
+            #ax.set_xlim(left=X[0,0],right=X[0,-1])
+            ax.set_xlim(left=5,right=15)
             ax.set_ylim(bottom=Y[0,0],top=Y[-1,0])
             ax.set_aspect('equal', adjustable='box')
         else:
@@ -166,8 +167,8 @@ Pdata = read_output_lines(outputfile+'P',imax+2,jmax+2)
 Ucenter = interpolate_data(Udata)
 Vcenter = interpolate_data(Vdata)
 
-time_evolution_imshow(Xpc,Ypc,Udata,Vdata,Pdata)
-#time_evolution_quiver(Xq,Yq,Ucenter,Vcenter)
+#time_evolution_imshow(Xpc,Ypc,Udata,Vdata,Pdata)
+time_evolution_quiver(Xq,Yq,Ucenter,Vcenter)
 
 #   #------------------------------
 #   #   Make gif

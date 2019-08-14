@@ -8,7 +8,7 @@ using namespace std;
 #include "parameters.h"
 
 void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V);
-void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V);
+void setSpecificBoundaries(Parameters p, obstacle* Obs, matrix<real>* U, matrix<real>* V);
 void setObsVelBoundaries(obstacle* Obs, matrix<real>* U, matrix<real>* V);
 void setObsFBoundaries(int i, int j, int bType, matrix<real>* U, matrix<real>* F);
 void setObsGBoundaries(int i, int j, int bType, matrix<real>* V, matrix<real>* G);

@@ -111,14 +111,9 @@ void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
   }
 }
 
-void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
+void setSpecificBoundaries(Parameters p, obstacle* Obs, matrix<real>* U, matrix<real>* V){
+  //  Lid driven flow
   if (false){
-    for (int j=floor((p.jmax+2)/2)-1;j<ceil((p.jmax+2)/2)+1;j++){
-      U->set(0,j,         std::abs(p.inflow));
-      V->set(0,j,        -V->get(1,j));
-    }
-  }
-  if (true){
     for (int i=1;i<=p.imax;i++){
       V->set(i,0, 0);
       V->set(i,p.jmax,0);
@@ -134,6 +129,22 @@ void setSpecificBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
     for (int j=1;j<=p.jmax;j++){
       V->set(0,j, -V->get(1,j));
       V->set(p.imax+1,j, -V->get(p.imax,j));
+    }
+  }
+  // Backward facing step
+  if (true){
+    for (int j = 1;j<=p.jmax;j++){
+      if (Obs->get(1,j)==FC){
+          U->set(0,j,         std::abs(p.inflow));
+          V->set(0,j,        -V->get(1,j));
+      }
+    }
+  }
+  // Narrow inflow on the left boundary
+  if (false){
+    for (int j=floor((p.jmax+2)/2)-1;j<ceil((p.jmax+2)/2)+1;j++){
+      U->set(0,j,         std::abs(p.inflow));
+      V->set(0,j,        -V->get(1,j));
     }
   }
 }

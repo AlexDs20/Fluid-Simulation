@@ -83,7 +83,7 @@ while (t<p.t_end){
   //-------------------------
   // Boundary Conditions
   setBoundaries(p,&U,&V);
-  setSpecificBoundaries(p,&U,&V);
+  setSpecificBoundaries(p,&Obs,&U,&V);
   setObsVelBoundaries(&Obs,&U,&V);
 
   //-------------------------
