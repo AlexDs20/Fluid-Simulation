@@ -9,7 +9,7 @@
 
 using namespace std;
 
-obstacle::obstacle(int w, int h, string file) : matrix<int>::matrix(w, h, file){
+obstacle::obstacle(const int w, const int h, const string file) : matrix<int>::matrix(w, h, file){
   for (int k=0; k<this->width*this->height; k++) {
     switch (this->val[k]){
       case B_FS_N:
@@ -67,15 +67,15 @@ obstacle::obstacle(int w, int h, string file) : matrix<int>::matrix(w, h, file){
 //--------------------------------------------------
 //  Convert the linear index k of the vector
 //  into the pair i,j
-void obstacle::toIJ(int k, int* i, int* j){
+void obstacle::toIJ(const int k, int* const i, int* const j){
   *j = floor(k/this->width);
   *i = k - *j*this->width;
 }
 
 
 //--------------------------------------------------
-//  Get the (i,j) pair for the element idxB with Boundary B_FLAG
-void obstacle::getIJ(int B_FLAG, int idxB, int* i ,int* j){
+//  Get the (i,j) pair for the element idxB in B_FLAG
+void obstacle::getIJ(const int B_FLAG, const int idxB, int* const i ,int* const j){
     switch (B_FLAG){
       case B_FS_N:
         toIJ(FS_N[idxB],i,j);

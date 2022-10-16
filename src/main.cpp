@@ -47,12 +47,14 @@ matrix<real> RHS((p.imax+2),(p.jmax+2));
 // Create the obstacles
 obstacle Obs(p.imax+2,p.jmax+2,obsfile);
 
+
 // Delete the existing output files
 remove((outputfile+'U').c_str());
 remove((outputfile+'V').c_str());
 remove((outputfile+'P').c_str());
 // and open files to write
 ofstream Ufile, Vfile, Pfile;
+
 Ufile.open(outputfile+'U', ios::out | ios::app);
 Vfile.open(outputfile+'V', ios::out | ios::app);
 Pfile.open(outputfile+'P', ios::out | ios::app);
@@ -72,8 +74,7 @@ Pfile.open(outputfile+'P', ios::out | ios::app);
 
 while (t<p.t_end){
   // Show runtime
-  std::cout.flush();
-  std::cout << "   " << t*100.0/p.t_end << "  %  \r";
+  std::cout << t*100.0f/p.t_end << "  % \r";
   std::cout.flush();
 
   //-------------------------

@@ -10,29 +10,32 @@ using namespace std;
 
 //--------------------------------------------------
 //  Template implementation
-template matrix<int>::matrix (int,int);
-template matrix<real>::matrix(int,int);
-template matrix<int>::matrix (int,int,int);
-template matrix<real>::matrix(int,int,real);
-template matrix<int>::matrix (int,int,string);
-template matrix<real>::matrix(int,int,string);
+template matrix<int>::matrix (const int,const int);
+template matrix<real>::matrix(const int,const int);
+template matrix<int>::matrix (const int,const int,const int);
+template matrix<real>::matrix(const int,const int,const real);
+template matrix<int>::matrix (const int,const int,const string);
+template matrix<real>::matrix(const int,const int,const string);
 
-template int matrix<int>::get(int,int);
-template real matrix<real>::get(int,int);
+template int matrix<int>::idx(const int, const int);
+template int matrix<real>::idx(const int, const int);
 
-template vector<int> matrix<int>::getAll();
+template int matrix<int>::get  (const int, const int);
+template real matrix<real>::get(const int, const int);
+
+template vector<int> matrix<int>::getAll ();
 template vector<real> matrix<real>::getAll();
 
-template void matrix<int>::set(int,int,int);
-template void matrix<real>::set(int,int,real);
+template void matrix<int>::set (const int, const int, const int);
+template void matrix<real>::set(const int, const int, const real);
 
-template int matrix<int>::max();
+template int matrix<int>::max  ();
 template real matrix<real>::max();
 
-template int matrix<int>::min();
+template int matrix<int>::min  ();
 template real matrix<real>::min();
 
-template int matrix<int>::amax();
+template int matrix<int>::amax  ();
 template real matrix<real>::amax();
 //--------------------------------------------------
 
@@ -40,29 +43,29 @@ template real matrix<real>::amax();
 //--------------------------------------------------
 //  Constructors
 template <typename T>
-matrix<T>::matrix(int w, int h){
-  width = w;
-  height = h;
-  val.resize(w*h);
+matrix<T>::matrix(const int w, const int h){
+  this->width = w;
+  this->height = h;
+  this->val.resize(w*h);
 }
 template <typename T>
-matrix<T>::matrix(int w, int h, T inVal){
-  width = w;
-  height = h;
-  val.resize(w*h,inVal);
+matrix<T>::matrix(const int w, const int h, const T inVal){
+  this->width = w;
+  this->height = h;
+  this->val.resize(w*h,inVal);
 }
 template <typename T>
-matrix<T>::matrix(int w, int h, string file){
-  width = w;
-  height = h;
-  val.resize(w*h);
+matrix<T>::matrix(const int w, const int h, string file){
+  this->width = w;
+  this->height = h;
+  this->val.resize(w*h);
   assignValues(file);
 }
 
 //--------------------------------------------------
-//  Linear index of the (i,j)
+//  Index pair (i,j) to linear
 template <typename T>
-int matrix<T>::idx(int i, int j){
+int matrix<T>::idx(const int i, const int j){
   if (i>width-1 || j>height-1){
     std::cout << "requested index out of bound!" << std::endl;
   }
@@ -72,7 +75,7 @@ int matrix<T>::idx(int i, int j){
 //--------------------------------------------------
 //  Element i,j
 template <typename T>
-T matrix<T>::get(int i, int j){
+T matrix<T>::get(const int i, const int j){
   return val[idx(i,j)];
 }
 
@@ -86,7 +89,7 @@ vector<T> matrix<T>::getAll(){
 //--------------------------------------------------
 //  Set Specific value
 template <typename T>
-void matrix<T>::set(int i, int j, T inVal){
+void matrix<T>::set(const int i, const int j, T inVal) {
   val[idx(i,j)] = inVal;
 }
 
@@ -102,11 +105,10 @@ void matrix<T>::assignValues(string file){
   in.open(file);
   if (in.is_open()){
     while (in >> readVal){
-      // Assign the value to the
-      val[idx(i,j)] = readVal;
+      // Assign the value
+      this->val[idx(i,j)] = readVal;
 
-      // The indices: when reaching the end of the x line (at imax i.e. w-2),
-      // jump to the next y line
+      // Update indices:
       if (i==width-2){
         i = 1;
         j++;

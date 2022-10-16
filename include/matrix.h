@@ -12,18 +12,22 @@ class matrix{
     void assignValues(string file);
 
   protected:
-    int width, height;
-    int idx(int i, int j);
+    // Var
     vector<T> val;
+    int width, height;
+    // Methods
+    int idx(const int i, const int j);
 
   public:
-    matrix(int w, int h);   // simple mem alloc
-    matrix(int w, int h, T inVal); // mem alloc with all values set to inVal
-    matrix(int w, int h, string file);// mem alloc with values given in the file
+    // Methods
+    // Constructors
+    matrix(const int w, const int h);   // simple mem alloc
+    matrix(const int w, const int h, const T inVal); // mem alloc with all values set to inVal
+    matrix(const int w, const int h, const string file);// mem alloc with values given in the file
 
-    T get(int i, int j);
+    T get(const int i, const int j);
     vector<T> getAll();
-    void set(int i, int j, T inVal);   // Set specific index val
+    void set(const int i, const int j, const T inVal);   // Set specific index val
     T max();
     T min();
     T amax();

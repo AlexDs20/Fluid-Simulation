@@ -5,7 +5,7 @@ using namespace std;
 
 #include "boundary.h"
 
-void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
+void setBoundaries(const Parameters& p, matrix<real>* const U, matrix<real>* const V){
 
 // Problem in the corners:
 // if a corner has 1 bonudary with no slip and one with free slip,
@@ -111,7 +111,7 @@ void setBoundaries(Parameters p, matrix<real>* U, matrix<real>* V){
   }
 }
 
-void setSpecificBoundaries(Parameters p, obstacle* Obs, matrix<real>* U, matrix<real>* V){
+void setSpecificBoundaries(const Parameters& p, obstacle* const Obs, matrix<real>* const U, matrix<real>* const V){
   //  Lid driven flow
   if (false){
     for (int i=1;i<=p.imax;i++){
@@ -149,7 +149,7 @@ void setSpecificBoundaries(Parameters p, obstacle* Obs, matrix<real>* U, matrix<
   }
 }
 
-void setObsVelBoundaries(obstacle* Obs, matrix<real>* U, matrix<real>* V){
+void setObsVelBoundaries(obstacle* const Obs, matrix<real>* const U, matrix<real>* const V){
   int i,j;
   for (int it=1;it<3;it++){
     //-------------------------------
@@ -298,7 +298,7 @@ void setObsVelBoundaries(obstacle* Obs, matrix<real>* U, matrix<real>* V){
   }
 }
 
-void setObsFBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* U){
+void setObsFBoundaries(const int& i, const int& j, const int& bType, matrix<real>* const F, matrix<real>* const U){
   switch(bType){
     case B_FS_W:
       F->set(i-1,j,   U->get(i-1,j));
@@ -339,7 +339,7 @@ void setObsFBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* U
   }
 }
 
-void setObsGBoundaries(int i, int j, int bType, matrix<real>* G, matrix<real>* V){
+void setObsGBoundaries(const int& i, const int& j, const int& bType, matrix<real>* const G, matrix<real>* const V){
   switch(bType){
     case B_FS_N:
       G->set(i,j,     V->get(i,j));
@@ -381,7 +381,8 @@ void setObsGBoundaries(int i, int j, int bType, matrix<real>* G, matrix<real>* V
 }
 
 // FG inner boundaries
-void setObsFGBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* G, matrix<real>* U, matrix<real>* V){
+void setObsFGBoundaries(const int& i, const int& j, const int& bType, matrix<real>* const F, matrix<real>* const G,
+                        matrix<real>* const U, matrix<real>* const V){
   switch(bType){
     // Free-slip
     case B_FS_N:
@@ -444,7 +445,7 @@ void setObsFGBoundaries(int i, int j, int bType, matrix<real>* F, matrix<real>* 
   }
 }
 
-void setObsPBoundaries(obstacle* Obs, matrix<real>* P){
+void setObsPBoundaries(obstacle* const Obs, matrix<real>* const P){
   int i,j;
   for (int it=1;it<3;it++){
     //-------------------------------

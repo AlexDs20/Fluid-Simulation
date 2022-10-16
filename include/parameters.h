@@ -1,12 +1,10 @@
 #pragma once
-
 #include <string>
 
 #include "matrix.h"
+#include "definitions.h"
 
 using namespace std;
-
-#define real float
 
 class Parameters{
   private:

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Parameters::Parameters(string inputfile){
+Parameters::Parameters(const string inputfile){
   ifstream in;
   string var, eqs;
   real val;
@@ -64,7 +64,7 @@ Parameters::Parameters(string inputfile){
       else if ( var.compare("wS") == 0 ){
         wS = val;}
       else{
-        cout << "The parameter " << var << " is invalid." << endl;
+        cout << "The parameter " + var + " is invalid." << endl;
       }
     };
   in.close();
@@ -75,7 +75,7 @@ Parameters::Parameters(string inputfile){
   dy = ylength/(real)(jmax);
 }
 
-void Parameters::setScale(real uMax, real vMax, real pMax){
+void Parameters::setScale(const real uMax, const real vMax, const real pMax){
   L = std::max(xlength,ylength);
   uInf = std::max(uMax,vMax);
   pInf = pMax;

@@ -9,7 +9,7 @@ using namespace std;
 
 class obstacle : public matrix<int>{
   private:
-    void toIJ(int k, int* i, int* j);
+    void toIJ(const int k, int* const i, int* const j);
 
   public:
     // Vectors that will contain the indices of the boundary
@@ -32,7 +32,7 @@ class obstacle : public matrix<int>{
     vector<int> NS_SE;
 
 
-    obstacle(int w, int h, string file);
+    obstacle(const int w, const int h, const string file);
 
-    void getIJ(int B_FLAG, int idxInB, int*i, int* j);
+    void getIJ(const int B_FLAG, const int idxInB, int* const i, int* const j);
 };
